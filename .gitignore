@@ -44,3 +44,5 @@ application-prod.properties
 *.jar
 *.jar.original
 src/main/resources/application.properties
+src/main/resources/data.sql
+src/main/resources/data-backup.sql
