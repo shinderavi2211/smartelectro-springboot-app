@@ -1,0 +1,1338 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1">
+    <meta name="theme-color" content="#173d32">
+    <meta name="description" content="Shop dependable electrical supplies from SmartElectro.">
+    <title>Welcome to Smart Electro Home</title>
+    <link rel="preconnect" href="https://fonts.googleapis.com">
+    <link rel="preconnect" href="https://fonts.gstatic.com" crossorigin>
+    <link href="https://fonts.googleapis.com/css2?family=DM+Sans:wght@400;500;600;700&family=Manrope:wght@400;500;600;700;800&display=swap" rel="stylesheet">
+    <link rel="stylesheet" href="/style.css">
+</head>
+<body>
+    <div class="announcement"><span>SmartElectro · Powering Every Connection</span><span>Free delivery on orders over ₹2,500</span></div>
+    <header class="site-header">
+        <div class="header-main page-shell">
+            <a class="brand" href="/" aria-label="SmartElectro home"><span class="brand-symbol" aria-hidden="true"><svg viewBox="0 0 24 24"><path d="M13.1 2.8 5.4 13h5.3l-.6 8.2L18.7 11h-5.3l-.3-8.2Z" fill="currentColor"/></svg></span><span>smart<span class="brand-light">electro</span><small>POWERING EVERY CONNECTION</small></span></a>
+            <form class="search-bar" id="searchForm" role="search">
+                <label class="sr-only" for="searchInput">Search products</label>
+                <input id="searchInput" type="search" placeholder="Search wires, switches, lighting..." autocomplete="off">
+                <button type="submit" aria-label="Search">⌕</button>
+            </form>
+            <nav class="header-actions" aria-label="Account and cart">
+                <div id="navAuth"><a href="/login.html" class="header-link">Sign in</a><a href="/register.html" class="header-link header-register">Create account</a></div>
+                <a id="wishlistShortcut" class="wishlist-shortcut" href="/wishlist" aria-label="My wishlist" hidden><span aria-hidden="true">♡</span> Wishlist <span id="wishlistCount" class="wishlist-count">0</span></a>
+                <a class="cart-shortcut" href="/cart" aria-label="Shopping cart">Cart <span id="cartCount" class="cart-count">0</span></a>
+            </nav>
+        </div>
+        <nav class="category-nav" aria-label="Main navigation">
+            <div class="page-shell category-nav-inner">
+                <button class="mobile-menu-toggle" id="mobileMenuToggle" type="button" aria-expanded="false" aria-controls="categoryLinks"><span aria-hidden="true">☰</span> Browse categories</button>
+                <div class="category-nav-links" id="categoryLinks">
+                    <a href="/" class="nav-current category-link">Shop all</a>
+                    <a href="/?category=Wires%20%26%20Cables" class="category-link">Wires &amp; cables</a>
+                    <a href="/?category=Switches%20%26%20Sockets" class="category-link">Switches &amp; sockets</a>
+                    <a href="/?category=Protection%20%26%20Distribution" class="category-link">Circuit protection</a>
+                    <a href="/?category=Lighting" class="category-link">Lighting</a>
+                    <a href="/?category=Fans" class="category-link">Fans</a>
+                    <a href="/?category=Conduits%20%26%20Trunking" class="category-link">Conduits &amp; trunking</a>
+                    <a href="/?category=Connectors%20%26%20Terminals" class="category-link">Connectors</a>
+                    <a href="/orders" class="nav-orders category-link">My orders</a>
+                </div>
+            </div>
+        </nav>
+    </header>
+
+    <main id="appView" class="page-shell main-content" aria-live="polite">
+        <div class="page-loading">Loading SmartElectro…</div>
+    </main>
+
+    <footer class="site-footer">
+        <div class="page-shell footer-main">
+            <a class="brand footer-brand" href="/"><span class="brand-symbol">SE</span><span>smart<span class="brand-light">electro</span><small>POWERING EVERY CONNECTION</small></span></a>
+            <p>Electrical supplies for the connections that power everyday life.</p>
+            <div class="footer-links"><a href="/">Shop all</a><a href="/?category=Wires%20%26%20Cables">Wires &amp; cables</a><a href="/?category=Lighting">Lighting</a><a href="/?category=Protection%20%26%20Distribution">Circuit protection</a><a href="/orders">My orders</a><a href="mailto:support@smartelectro.com">Contact support</a></div>
+            <div class="footer-owners"><span>Owned &amp; managed by</span><strong>Gauri &amp; Rajshree</strong></div>
+        </div>
+        <div class="page-shell footer-bottom"><span>© 2026 SmartElectro</span><span>Gauri &amp; Rajshree · Secure checkout</span></div>
+    </footer>
+
+    <div id="toast" class="toast" role="status" aria-live="polite"></div>
+    <dialog id="editModal" class="dialog">
+        <div class="dialog-panel">
+            <button type="button" class="dialog-x" onclick="closeEditModal()" aria-label="Close">×</button>
+            <p class="eyebrow">CATALOG ADMIN</p><h2>Edit product</h2>
+            <form id="editForm" class="form-grid">
+                <input type="hidden" id="editId">
+                <label>Product name<input id="editName" required></label>
+                <label>Category<select id="editCategory" required></select></label>
+                <label>Price (₹)<input id="editPrice" type="number" min="0" step=".01" required></label>
+                <label>Stock<input id="editStock" type="number" min="0" required></label>
+                <label>Brand<input id="editBrand"></label>
+                <label>Image URL<input id="editImageUrl" type="url"></label>
+                <label class="form-wide">Description<textarea id="editDescription" rows="2"></textarea></label>
+                <label class="form-wide">Specifications<textarea id="editSpecifications" rows="2"></textarea></label>
+                <label>Warranty<input id="editWarranty"></label>
+                <label>Original price<input id="editOriginalPrice" type="number" min="0" step=".01"></label>
+                <label class="form-wide">Offer<input id="editOffer"></label>
+                <button class="btn btn-primary form-wide" type="submit">Save changes</button>
+            </form>
+        </div>
+    </dialog>
+
+    <script>
+        const fallbackImage = '/images/product-photo-unavailable.svg';
+        const guestCartKey = 'smartelectro.guestCart';
+        const checkoutIntentKey = 'smartelectro.checkoutItems';
+        const checkoutDraftKey = 'smartelectro.checkoutDraft';
+        const checkoutRequestKey = 'smartelectro.checkoutRequest';
+        const checkoutCouponKey = 'smartelectro.checkoutCoupon';
+        const app = document.getElementById('appView');
+        const currency = new Intl.NumberFormat('en-IN', { style: 'currency', currency: 'INR', maximumFractionDigits: 2 });
+        let allCategories = [];
+        let checkoutAddresses = [];
+        let currentUser = null;
+        let wishlistEntries = [];
+        let wishlistIds = new Set();
+        let adminCoupons = [];
+        let currentCheckoutCart = null;
+        let checkoutCouponQuote = null;
+        let currentCheckoutOffers = [];
+        let toastTimer;
+
+        const esc = value => String(value ?? '').replace(/[&<>"']/g, char => ({ '&': '&amp;', '<': '&lt;', '>': '&gt;', '"': '&quot;', "'": '&#39;' })[char]);
+        const money = value => currency.format(Number(value || 0));
+        const imageSrc = value => /^(https?:\/\/|\/)/i.test(String(value || '')) ? esc(value) : fallbackImage;
+        const photoAlt = product => /\/api\/products\/\d+\/image$|product-photo-unavailable\.svg/.test(String(product.imageUrl || '')) ? `Product photo unavailable for ${product.name}` : product.name;
+        const productPhoto = (product, extra = '') => `<img class="${extra}" src="${imageSrc(product.imageUrl)}" alt="${esc(photoAlt(product))}" loading="lazy" onerror="this.onerror=null;this.src='${fallbackImage}'">`;
+        const currentPath = () => window.location.pathname;
+        const ratingMarkup = (averageRating, reviewCount) => {
+            const count = Number(reviewCount || 0);
+            if (!count) return '<div class="rating-note"><span class="rating-stars" aria-hidden="true">☆☆☆☆☆</span><span>No customer ratings yet</span></div>';
+            const average = Number(averageRating);
+            const filled = Math.max(0, Math.min(5, Math.round(average)));
+            return `<div class="rating-note"><span class="rating-stars" role="img" aria-label="${average.toFixed(1)} out of 5 stars">${'★'.repeat(filled)}${'☆'.repeat(5 - filled)}</span><span>${average.toFixed(1)} · ${count} ${count === 1 ? 'review' : 'reviews'}</span></div>`;
+        };
+        const ratingSummaryMarkup = summary => summary.errorMessage
+            ? `<p class="rating-note rating-unavailable" role="status">${esc(summary.errorMessage)}</p>`
+            : ratingMarkup(summary.averageRating, summary.reviewCount);
+
+        function wishlistToggleMarkup(productId, detail = false) {
+            const saved = wishlistIds.has(Number(productId));
+            const label = saved ? 'Remove from wishlist' : 'Add to wishlist';
+            return `<button type="button" class="${detail ? 'btn btn-outline wishlist-detail-button' : 'wishlist-toggle'}" data-wishlist-product-id="${Number(productId)}" aria-label="${label}" aria-pressed="${saved}" onclick="toggleWishlist(${Number(productId)})">${detail ? (saved ? 'Remove from wishlist' : 'Add to wishlist') : (saved ? '♥' : '♡')}</button>`;
+        }
+
+        async function api(url, options = {}) {
+            const response = await fetch(url, { credentials: 'include', ...options, headers: { ...(options.body ? { 'Content-Type': 'application/json' } : {}), ...(options.headers || {}) } });
+            if (!response.ok) {
+                let message = await response.text();
+                if ((response.headers.get('content-type') || '').includes('application/json')) {
+                    try {
+                        const problem = JSON.parse(message);
+                        message = problem.detail || problem.message || problem.title || message;
+                    } catch (error) {
+                        console.error('Could not parse an API error response.', error);
+                    }
+                }
+
+                function requestCouponQuote(code, items) {
+                    return api('/api/coupons/validate', {
+                        method: 'POST',
+                        body: JSON.stringify({
+                            code,
+                            items: items.map(item => ({
+                                productId: Number(item.productId), quantity: Number(item.quantity)
+                            }))
+                        })
+                    });
+                }
+                if (response.status === 401) throw new Error('Please sign in to continue.');
+                if (response.status === 403) throw new Error('Your account does not have permission to perform this action.');
+                const error = new Error(message || `Request failed (${response.status}).`);
+                error.status = response.status;
+                throw error;
+            }
+            if (response.status === 204) return null;
+            const contentType = response.headers.get('content-type') || '';
+            return contentType.includes('application/json') ? response.json() : response.text();
+        }
+
+        function showToast(message, error = false) {
+            const toast = document.getElementById('toast');
+            toast.textContent = message;
+            toast.classList.toggle('toast-error', error);
+            toast.classList.add('toast-visible');
+            clearTimeout(toastTimer);
+            toastTimer = setTimeout(() => toast.classList.remove('toast-visible'), 3200);
+        }
+
+        function readGuestCart() {
+            try {
+                const cart = JSON.parse(localStorage.getItem(guestCartKey) || '[]');
+                return Array.isArray(cart) ? cart.filter(item => Number.isInteger(Number(item.productId)) && Number(item.quantity) > 0) : [];
+            } catch (error) {
+                console.error('Could not read the temporary cart.', error);
+                return [];
+            }
+        }
+
+        function saveGuestCart(cart) {
+            localStorage.setItem(guestCartKey, JSON.stringify(cart));
+        }
+
+        function guestCartLines() {
+            return readGuestCart().map(item => ({
+                ...item,
+                id: `guest:${Number(item.productId)}`,
+                unitPrice: Number(item.unitPrice),
+                originalUnitPrice: Number(item.originalUnitPrice || item.unitPrice),
+                discount: Math.max(0, Number(item.originalUnitPrice || item.unitPrice) - Number(item.unitPrice)) * Number(item.quantity),
+                quantity: Number(item.quantity),
+                stock: Number(item.stock),
+                lineTotal: Number(item.unitPrice) * Number(item.quantity)
+            }));
+        }
+
+        function withGuestItems(cart) {
+            const items = [...cart.items, ...guestCartLines()];
+            return cartTotals(items);
+        }
+
+        function cartTotals(items) {
+            const subtotal = items.reduce((sum, item) => sum + Number(item.lineTotal), 0);
+            const discount = items.reduce((sum, item) => sum + Number(item.discount || 0), 0);
+            const deliveryCharge = subtotal > 0 && subtotal < 2500 ? 99 : 0;
+            return {
+                items,
+                subtotal,
+                discount,
+                deliveryCharge,
+                total: subtotal + deliveryCharge,
+                itemCount: items.reduce((sum, item) => sum + Number(item.quantity), 0)
+            };
+        }
+
+        function checkoutCart(cart) {
+            let requestedItems = [];
+            try {
+                requestedItems = JSON.parse(sessionStorage.getItem(checkoutIntentKey) || '[]');
+            } catch (error) {
+                console.error('Could not read checkout selection.', error);
+            }
+            if (!Array.isArray(requestedItems) || !requestedItems.length) return cartTotals(cart.items);
+            const items = requestedItems.map(requested => {
+                const item = cart.items.find(line => Number(line.productId) === Number(requested.productId));
+                if (!item) return null;
+                const quantity = Number(requested.quantity);
+                return {
+                    ...item,
+                    quantity,
+                    lineTotal: Number(item.unitPrice) * quantity,
+                    discount: Number(item.originalUnitPrice || item.unitPrice) > Number(item.unitPrice)
+                        ? (Number(item.originalUnitPrice) - Number(item.unitPrice)) * quantity : 0
+                };
+            }).filter(Boolean);
+            return cartTotals(items);
+        }
+
+        async function mergeGuestCart() {
+            let guestItems = readGuestCart();
+            if (!guestItems.length) return;
+            let remoteCart = await api('/api/cart');
+            for (const guestItem of guestItems) {
+                const existing = remoteCart.items.find(item => Number(item.productId) === Number(guestItem.productId));
+                const available = Math.max(0, Number(guestItem.stock) - Number(existing?.quantity || 0));
+                const quantityToMove = Math.min(Number(guestItem.quantity), available);
+                if (!quantityToMove) continue;
+                try {
+                    remoteCart = await api('/api/cart/items', {
+                        method: 'POST',
+                        body: JSON.stringify({ productId: Number(guestItem.productId), quantity: quantityToMove })
+                    });
+                } catch (error) {
+                    console.warn(`Could not merge guest cart item ${guestItem.productId}; it remains in the temporary cart.`, error);
+                    continue;
+                }
+                guestItems = guestItems.flatMap(item => {
+                    if (Number(item.productId) !== Number(guestItem.productId)) return [item];
+                    const remaining = Number(item.quantity) - quantityToMove;
+                    return remaining > 0 ? [{ ...item, quantity: remaining }] : [];
+                });
+                saveGuestCart(guestItems);
+            }
+        }
+
+        async function updateHeader() {
+            currentUser = null;
+            wishlistEntries = [];
+            wishlistIds = new Set();
+            try {
+                const response = await fetch('/api/auth/me', { credentials: 'include' });
+                if (response.status === 200) {
+                    currentUser = await response.json();
+                    await mergeGuestCart();
+                }
+            } catch (error) {
+                console.error('Could not verify the signed-in session.', error);
+            }
+            const auth = document.getElementById('navAuth');
+            document.getElementById('wishlistShortcut').hidden = !currentUser;
+            if (currentUser) {
+                const email = currentUser.email || currentUser.username;
+                auth.innerHTML = `<a class="header-account-email" href="/orders" title="${esc(email)}" aria-label="My orders for ${esc(email)}">${esc(email)}</a><button class="text-button" onclick="logout()">Sign out</button>`;
+            } else {
+                auth.innerHTML = '<a href="/login.html" class="header-link">Sign in</a><a href="/register.html" class="header-link header-register">Create account</a>';
+            }
+            document.querySelector('.admin-nav-link')?.remove();
+            if (currentUser?.role === 'ADMIN') {
+                document.getElementById('categoryLinks').insertAdjacentHTML('beforeend', '<a href="/admin" class="category-link admin-nav-link">Admin dashboard</a>');
+            }
+            if (currentUser) {
+                try {
+                    applyWishlistView(await api('/api/wishlist'));
+                } catch (error) {
+                    console.error('Could not load the signed-in wishlist.', error);
+                }
+            }
+            if (!currentUser) {
+                document.getElementById('cartCount').textContent = readGuestCart().reduce((sum, item) => sum + Number(item.quantity), 0);
+                return;
+            }
+            try {
+                const cart = await api('/api/cart');
+                document.getElementById('cartCount').textContent = withGuestItems(cart).itemCount;
+            } catch (error) {
+                console.error('Could not load the signed-in cart.', error);
+            }
+        }
+
+        async function logout() {
+            await fetch('/api/auth/logout', { method: 'POST', credentials: 'include' });
+            localStorage.removeItem('user');
+            window.location.href = '/';
+        }
+
+        function navTo(path) {
+            window.location.href = path;
+        }
+
+        async function render() {
+            const path = currentPath();
+            if (path === '/cart') return renderCart();
+            if (path === '/checkout') return renderCheckout();
+            if (path === '/orders') return renderOrders();
+            if (path === '/admin') return renderAdminDashboard();
+            if (path === '/wishlist') return renderWishlist();
+            if (path.startsWith('/order-confirmation/')) return renderOrderDetails(decodeURIComponent(path.slice('/order-confirmation/'.length)), true);
+            if (path.startsWith('/orders/')) return renderOrderDetails(decodeURIComponent(path.slice('/orders/'.length)));
+            const productMatch = path.match(/^\/product\/(\d+)$/);
+            if (productMatch) return renderProductDetail(Number(productMatch[1]));
+            return renderCatalog();
+        }
+
+        async function renderCatalog() {
+            const params = new URLSearchParams(window.location.search);
+            const query = params.get('q') || '';
+            const category = params.get('category') || '';
+            const isHome = currentPath() === '/' && !query && !category;
+            document.getElementById('searchInput').value = query;
+            app.innerHTML = `${isHome ? '<div id="homeHeroMount"></div><div id="homeCategoriesMount"></div>' : `<section class="catalog-intro">
+                    <div><p class="eyebrow">${query ? 'SEARCH SMARTER' : 'SHOP THE RANGE'}</p><h1>${query ? 'Find the right parts.' : 'Get the right parts.'}<br><span>${query ? 'For every project.' : 'Get the job done.'}</span></h1><p>${query ? `Results for “${esc(query)}”` : 'Trusted wires, switchgear and installation essentials—all in one place.'}</p></div>
+                    <div class="intro-assurance"><span class="assurance-icon">✓</span><span><strong>Work-ready essentials</strong><small>For home, trade and site projects</small></span></div>
+                </section>`}
+                <section class="browse-section">
+                    <div class="section-title-row" id="homeProducts"><div><p class="eyebrow">${isHome ? 'THE SMART ELECTRO RANGE' : 'SHOP YOUR WAY'}</p><h2>${isHome ? 'Electrical essentials for every job' : category ? esc(category) : 'Electrical supplies'}</h2></div><span id="resultCount" class="result-count"></span></div>
+                    <div id="categoryFilters" class="category-chips" aria-label="Filter by category"></div>
+                    <div id="productGrid" class="product-grid"><div class="page-loading">Loading products…</div></div>
+                </section>
+                ${isHome ? '<div id="homeOwnersMount"></div><div id="homeBenefitsMount"></div>' : ''}
+                ${currentUser?.role === 'ADMIN' ? adminMarkup() : ''}`;
+            const [products, categories] = await Promise.all([
+                api(category ? `/api/products/category/${encodeURIComponent(category)}` : query ? `/api/products/search?query=${encodeURIComponent(query)}` : '/api/products'),
+                api('/api/products/categories/all')
+            ]);
+            allCategories = categories;
+            if (isHome) {
+                document.getElementById('homeHeroMount').innerHTML = homeHeroMarkup(products);
+                document.getElementById('homeCategoriesMount').innerHTML = homeCategoriesMarkup(categories);
+                document.getElementById('homeOwnersMount').innerHTML = homeOwnersMarkup();
+                document.getElementById('homeBenefitsMount').innerHTML = homeBenefitsMarkup();
+            }
+            document.getElementById('categoryFilters').innerHTML = `<a class="category-chip ${!category ? 'active' : ''}" href="/">All supplies</a>` + categories.map(item =>
+                `<a class="category-chip ${category === item ? 'active' : ''}" href="/?category=${encodeURIComponent(item)}">${esc(item)}</a>`).join('');
+            document.getElementById('resultCount').textContent = `${products.length} ${products.length === 1 ? 'product' : 'products'}`;
+            document.getElementById('productGrid').innerHTML = products.map(productCard).join('') || '<div class="empty-state">No products match this search. Try another category or search term.</div>';
+            document.querySelectorAll('.category-nav-links a').forEach(link => link.classList.toggle('nav-current', link.getAttribute('href') === (category ? `/?category=${encodeURIComponent(category)}` : query ? `/?q=${encodeURIComponent(query)}` : '/')));
+            document.querySelector('.category-nav-links')?.classList.remove('is-open');
+            document.getElementById('mobileMenuToggle')?.setAttribute('aria-expanded', 'false');
+            wireAdminForms();
+        }
+
+        async function renderAdminDashboard(productQuery = '') {
+            if (currentUser?.role !== 'ADMIN') {
+                app.innerHTML = '<section class="empty-state large-empty"><h1>Admin access required</h1><p>This area is restricted to authorized administrators.</p><a class="btn btn-primary" href="/">Back to shop</a></section>';
+                return;
+            }
+            const productsUrl = productQuery ? `/api/admin/products?query=${encodeURIComponent(productQuery)}` : '/api/admin/products';
+            const [summary, orders, lowStock, customers, products, categories, coupons] = await Promise.all([
+                api('/api/admin/summary'), api('/api/admin/orders'), api('/api/admin/inventory/low-stock'),
+                api('/api/admin/customers'), api(productsUrl), api('/api/products/categories/all'),
+                api('/api/admin/coupons')
+            ]);
+            allCategories = categories;
+            adminCoupons = coupons;
+            app.innerHTML = `<div class="page-heading"><div><p class="eyebrow">SECURE OPERATIONS</p><h1>Admin dashboard</h1><p class="muted-copy">Live summaries are derived from existing MySQL records. Low stock means five or fewer units.</p></div><a class="btn btn-outline" href="/">View storefront</a></div>
+                <section class="admin-metrics" aria-label="Store summary">
+                    <article><span>Total orders</span><strong>${summary.totalOrders}</strong></article>
+                    <article class="${summary.pendingOrders ? 'metric-warning' : ''}"><span>Pending orders</span><strong>${summary.pendingOrders}</strong></article>
+                    <article><span>Customers</span><strong>${summary.totalCustomers}</strong></article>
+                    <article><span>Products</span><strong>${summary.totalProducts}</strong></article>
+                    <article class="${summary.lowStockProducts ? 'metric-warning' : ''}"><span>Low-stock products</span><strong>${summary.lowStockProducts}</strong></article>
+                    <article><span>Non-cancelled order value</span><strong>${money(summary.nonCancelledOrderValue)}</strong></article>
+                </section>
+                <section class="admin-dashboard-grid">
+                    <article class="admin-dashboard-panel admin-panel-wide"><div class="admin-panel-heading"><div><p class="eyebrow">FULFILMENT</p><h2>Order management</h2></div><span>${orders.length} orders</span></div>
+                        ${orders.length ? `<div class="admin-table-wrap"><table class="admin-table"><thead><tr><th>Order / date</th><th>Customer / phone</th><th>Delivery address</th><th>Items</th><th>Payment</th><th>Total</th><th>Status</th></tr></thead><tbody>${orders.map(({ order }) => adminOrderRow(order)).join('')}</tbody></table></div>` : '<p class="muted-copy">No orders have been placed.</p>'}
+                    </article>
+                    <article class="admin-dashboard-panel"><div class="admin-panel-heading"><div><p class="eyebrow">INVENTORY</p><h2>Low-stock alerts</h2></div><span>${lowStock.length} products</span></div>
+                        ${lowStock.length ? `<div class="admin-table-wrap"><table class="admin-table"><thead><tr><th>Product</th><th>Stock</th><th>Update</th></tr></thead><tbody>${lowStock.map(item => `<tr><td><strong>${esc(item.name)}</strong><small>${esc(item.brand || item.category || '')}</small></td><td>${Number(item.stock || 0)}</td><td><div class="stock-editor"><input id="stock-${Number(item.id)}" type="number" min="0" max="1000000" value="${Number(item.stock || 0)}" aria-label="New stock for ${esc(item.name)}"><button class="btn btn-outline btn-small" onclick="updateAdminStock(${Number(item.id)})">Save</button></div></td></tr>`).join('')}</tbody></table></div>` : '<p class="muted-copy">No products currently meet the low-stock threshold.</p>'}
+                    </article>
+                    <article class="admin-dashboard-panel"><div class="admin-panel-heading"><div><p class="eyebrow">CUSTOMER PRIVACY</p><h2>Customers</h2></div><span>${customers.length}</span></div>
+                        ${customers.length ? `<div class="admin-customer-list">${customers.map(customer => `<div><strong>${esc(customer.displayName)}</strong><span>${esc(customer.maskedEmail)}</span><small>${customer.orderCount} ${customer.orderCount === 1 ? 'order' : 'orders'}</small></div>`).join('')}</div>` : '<p class="muted-copy">No customers are registered.</p>'}
+                    </article>
+                    <article class="admin-dashboard-panel admin-panel-wide"><div class="admin-panel-heading"><div><p class="eyebrow">CATALOG</p><h2>Product management</h2></div><span>${products.length} products</span></div>
+                        <form id="adminProductSearch" class="admin-search-form"><label class="sr-only" for="adminProductQuery">Search products</label><input id="adminProductQuery" value="${esc(productQuery)}" placeholder="Search product names"><button class="btn btn-outline" type="submit">Search</button></form>
+                        ${products.length ? `<div class="admin-table-wrap"><table class="admin-table"><thead><tr><th>Product</th><th>Category</th><th>Price</th><th>Stock</th><th>Status</th><th>Actions</th></tr></thead><tbody>${products.map(product => `<tr><td><strong>${esc(product.name)}</strong><small>${esc(product.brand || '')}</small></td><td>${esc(product.category)}</td><td>${money(product.price)}</td><td>${Number(product.stock || 0)}</td><td><span class="status-badge ${product.active ? '' : 'status-cancelled'}">${product.active ? 'Active' : 'Inactive'}</span></td><td><div class="admin-row-actions"><button class="btn btn-outline btn-small" onclick="openEditModal(${Number(product.id)})">Edit</button><button class="btn btn-outline btn-small" onclick="setAdminProductActive(${Number(product.id)}, ${!product.active})">${product.active ? 'Deactivate' : 'Activate'}</button></div></td></tr>`).join('')}</tbody></table></div>` : '<p class="muted-copy">No products match this search.</p>'}
+                    </article>
+                </section>${couponAdminMarkup(coupons)}${adminMarkup()}`;
+            wireAdminForms();
+            wireAdminDashboard();
+            wireAdminCouponForm();
+        }
+
+        function adminOrderRow(order) {
+            const normalized = order.status === 'PLACED' ? 'ORDER_PLACED' : order.status;
+            const next = normalized === 'ORDER_PLACED' ? ['CONFIRMED', 'CANCELLED']
+                : normalized === 'CONFIRMED' ? ['PACKED']
+                : normalized === 'PACKED' ? ['SHIPPED']
+                : normalized === 'SHIPPED' ? ['OUT_FOR_DELIVERY']
+                : normalized === 'OUT_FOR_DELIVERY' ? ['DELIVERED'] : [];
+            const address = [order.address.addressLine1, order.address.addressLine2, `${order.address.city}, ${order.address.state} ${order.address.postalCode}`].filter(Boolean).map(esc).join('<br>');
+            return `<tr><td><a href="/orders/${encodeURIComponent(order.orderNumber)}"><strong>${esc(order.orderNumber)}</strong></a><small>${new Date(order.createdAt).toLocaleDateString('en-IN')}</small></td>
+                <td><strong>${esc(order.address.recipientName)}</strong><small>${esc(order.address.phone || 'Phone unavailable')}</small></td>
+                <td>${address || 'Address unavailable'}</td>
+                <td>${order.items.map(item => `${Number(item.quantity)} × ${esc(item.name)}`).join('<br>')}</td>
+                <td>${esc(paymentLabel(order.paymentMethod))}</td><td>${money(order.total)}</td>
+                <td><span class="status-badge ${order.status === 'CANCELLED' ? 'status-cancelled' : ''}">${statusLabel(order.status)}</span>${next.length ? `<div class="status-editor"><select id="nextStatus-${Number(order.id)}" aria-label="Next status for order ${esc(order.orderNumber)}">${next.map(status => `<option value="${status}">${statusLabel(status)}</option>`).join('')}</select><button class="btn btn-outline btn-small" onclick="updateAdminOrderStatus(${Number(order.id)})">Update</button></div>` : ''}</td></tr>`;
+        }
+
+        function wireAdminDashboard() {
+            document.getElementById('adminProductSearch')?.addEventListener('submit', event => {
+                event.preventDefault();
+                renderAdminDashboard(document.getElementById('adminProductQuery').value.trim());
+            });
+        }
+
+        async function updateAdminOrderStatus(id) {
+            try {
+                const status = document.getElementById(`nextStatus-${id}`).value;
+                await api(`/api/admin/orders/${id}/status`, { method: 'PATCH', body: JSON.stringify({ status }) });
+                showToast('Order status updated.');
+                await renderAdminDashboard();
+            } catch (error) { showToast(error.message, true); }
+        }
+
+        async function updateAdminStock(id) {
+            try {
+                const stock = Number(document.getElementById(`stock-${id}`).value);
+                await api(`/api/admin/products/${id}/stock`, { method: 'PATCH', body: JSON.stringify({ stock }) });
+                showToast('Inventory updated.');
+                await renderAdminDashboard();
+            } catch (error) { showToast(error.message, true); }
+        }
+
+        async function setAdminProductActive(id, active) {
+            const action = active ? 'activate' : 'deactivate';
+            if (!confirm(`Are you sure you want to ${action} this product? ${active ? 'It will appear in the storefront again.' : 'It will be hidden from customers and existing order records will be preserved.'}`)) return;
+            try {
+                await api(`/api/admin/products/${id}/active`, { method: 'PATCH', body: JSON.stringify({ active }) });
+                showToast(`Product ${active ? 'activated' : 'deactivated'}.`);
+                await renderAdminDashboard();
+            } catch (error) { showToast(error.message, true); }
+        }
+
+        function couponAdminMarkup(coupons) {
+            return `<section class="admin-dashboard-panel coupon-admin-panel"><div class="admin-panel-heading"><div><p class="eyebrow">PROMOTIONS</p><h2>Coupons &amp; offers</h2></div><span>${coupons.length} configured</span></div>
+                <form id="couponForm" class="form-grid coupon-form">
+                    <input type="hidden" name="couponId">
+                    <label>Coupon code<input name="code" required maxlength="40" pattern="[A-Za-z0-9][A-Za-z0-9_-]{2,39}" placeholder="e.g. TRADE10"></label>
+                    <label>Discount type<select name="discountType" required><option value="PERCENTAGE">Percentage</option><option value="FIXED_AMOUNT">Fixed amount (₹)</option></select></label>
+                    <label>Discount value<input name="discountValue" type="number" min=".01" step=".01" required></label>
+                    <label>Minimum order (₹)<input name="minimumOrderValue" type="number" min="0" step=".01" value="0" required></label>
+                    <label>Maximum discount (₹)<input name="maximumDiscount" type="number" min=".01" step=".01" placeholder="Optional; percentage only"></label>
+                    <label>Starts<input name="startsAt" type="datetime-local" required></label>
+                    <label>Expires<input name="expiresAt" type="datetime-local" required></label>
+                    <label>Total uses<input name="usageLimit" type="number" min="1" placeholder="Unlimited"></label>
+                    <label>Uses per customer<input name="perCustomerUsageLimit" type="number" min="1" value="1" required></label>
+                    <label class="checkbox-label"><input name="active" type="checkbox" checked> Active</label>
+                    <div class="form-wide coupon-form-actions"><button class="btn btn-primary" type="submit">Create coupon</button><button class="btn btn-outline" id="cancelCouponEdit" type="button" hidden>Cancel edit</button></div>
+                    <p id="couponAdminMessage" class="form-message form-wide" role="status"></p>
+                </form>
+                ${coupons.length ? `<div class="admin-table-wrap"><table class="admin-table"><thead><tr><th>Code / discount</th><th>Eligibility</th><th>Period / usage</th><th>Status</th><th>Manage</th></tr></thead><tbody>${coupons.map(coupon => `<tr><td><strong>${esc(coupon.code)}</strong><small>${coupon.discountType === 'PERCENTAGE' ? `${Number(coupon.discountValue)}% off${coupon.maximumDiscount ? ` up to ${money(coupon.maximumDiscount)}` : ''}` : `${money(coupon.discountValue)} off`}</small></td><td>Min. ${money(coupon.minimumOrderValue)}<small>${coupon.perCustomerUsageLimit} per customer</small></td><td>${new Date(coupon.startsAt).toLocaleDateString('en-IN')} – ${new Date(coupon.expiresAt).toLocaleDateString('en-IN')}<small>${coupon.totalRedemptions} / ${coupon.usageLimit ?? '∞'} uses</small></td><td><span class="status-badge ${coupon.active ? '' : 'status-cancelled'}">${coupon.active ? 'Active' : 'Inactive'}</span></td><td><div class="admin-row-actions"><button class="btn btn-outline btn-small" onclick="editCoupon(${Number(coupon.id)})">Edit</button><button class="btn btn-outline btn-small" onclick="toggleCouponActive(${Number(coupon.id)}, ${!coupon.active})">${coupon.active ? 'Deactivate' : 'Activate'}</button><button class="btn btn-outline btn-small" onclick="loadCouponUsage(${Number(coupon.id)})">Usage</button></div></td></tr><tr id="couponUsage-${Number(coupon.id)}" class="coupon-usage-row" hidden><td colspan="5"></td></tr>`).join('')}</tbody></table></div>` : '<p class="muted-copy">No coupons configured. Create an offer to make it available in checkout.</p>'}
+            </section>`;
+        }
+
+        function wireAdminCouponForm() {
+            const form = document.getElementById('couponForm');
+            if (!form) return;
+            form.addEventListener('submit', async event => {
+                event.preventDefault();
+                if (!form.reportValidity()) return;
+                const values = Object.fromEntries(new FormData(form));
+                const couponId = values.couponId;
+                const request = {
+                    code: values.code.trim(),
+                    discountType: values.discountType,
+                    discountValue: Number(values.discountValue),
+                    minimumOrderValue: Number(values.minimumOrderValue),
+                    maximumDiscount: values.maximumDiscount ? Number(values.maximumDiscount) : null,
+                    startsAt: values.startsAt,
+                    expiresAt: values.expiresAt,
+                    usageLimit: values.usageLimit ? Number(values.usageLimit) : null,
+                    perCustomerUsageLimit: Number(values.perCustomerUsageLimit),
+                    active: form.elements.active.checked
+                };
+                try {
+                    await api(couponId ? `/api/admin/coupons/${couponId}` : '/api/admin/coupons', {
+                        method: couponId ? 'PUT' : 'POST',
+                        body: JSON.stringify(request)
+                    });
+                    showToast(couponId ? 'Coupon updated.' : 'Coupon created.');
+                    await renderAdminDashboard();
+                } catch (error) { document.getElementById('couponAdminMessage').textContent = error.message; }
+            });
+            document.getElementById('cancelCouponEdit')?.addEventListener('click', resetCouponForm);
+        }
+
+        function editCoupon(id) {
+            const coupon = adminCoupons.find(item => Number(item.id) === Number(id));
+            const form = document.getElementById('couponForm');
+            if (!coupon || !form) return;
+            form.elements.couponId.value = coupon.id;
+            form.elements.code.value = coupon.code;
+            form.elements.discountType.value = coupon.discountType;
+            form.elements.discountValue.value = coupon.discountValue;
+            form.elements.minimumOrderValue.value = coupon.minimumOrderValue;
+            form.elements.maximumDiscount.value = coupon.maximumDiscount ?? '';
+            form.elements.startsAt.value = coupon.startsAt.slice(0, 16);
+            form.elements.expiresAt.value = coupon.expiresAt.slice(0, 16);
+            form.elements.usageLimit.value = coupon.usageLimit ?? '';
+            form.elements.perCustomerUsageLimit.value = coupon.perCustomerUsageLimit;
+            form.elements.active.checked = coupon.active;
+            form.querySelector('button[type="submit"]').textContent = 'Save coupon';
+            document.getElementById('cancelCouponEdit').hidden = false;
+            form.scrollIntoView({ behavior: 'smooth', block: 'center' });
+        }
+
+        function resetCouponForm() {
+            const form = document.getElementById('couponForm');
+            if (!form) return;
+            form.reset();
+            form.elements.couponId.value = '';
+            form.elements.perCustomerUsageLimit.value = '1';
+            form.querySelector('button[type="submit"]').textContent = 'Create coupon';
+            document.getElementById('cancelCouponEdit').hidden = true;
+            document.getElementById('couponAdminMessage').textContent = '';
+        }
+
+        async function toggleCouponActive(id, active) {
+            try {
+                await api(`/api/admin/coupons/${id}/active`, { method: 'PATCH', body: JSON.stringify({ active }) });
+                showToast(active ? 'Coupon activated.' : 'Coupon deactivated.');
+                await renderAdminDashboard();
+            } catch (error) { showToast(error.message, true); }
+        }
+
+        async function loadCouponUsage(id) {
+            const row = document.getElementById(`couponUsage-${id}`);
+            if (!row) return;
+            if (!row.hidden) {
+                row.hidden = true;
+                return;
+            }
+            try {
+                const usages = await api(`/api/admin/coupons/${id}/usage`);
+                row.firstElementChild.innerHTML = usages.length
+                    ? `<strong>Redemption history</strong><div class="admin-customer-list">${usages.map(usage => `<div><strong>${esc(usage.orderNumber)}</strong><span>${esc(usage.maskedEmail)}</span><small>${money(usage.discountAmount)} · ${new Date(usage.createdAt).toLocaleString('en-IN')}</small></div>`).join('')}</div>`
+                    : '<span class="muted-copy">No coupon redemptions yet.</span>';
+                row.hidden = false;
+            } catch (error) { showToast(error.message, true); }
+        }
+
+        function homeHeroMarkup(products) {
+            const featured = [
+                products.find(product => product.category === 'Wires & Cables'),
+                products.find(product => product.category === 'Lighting'),
+                products.find(product => product.category === 'Protection & Distribution'),
+                products.find(product => product.category === 'Switches & Sockets')
+            ].filter(Boolean);
+            const showcase = featured.length ? `<div class="home-product-collage">${featured.map((product, index) => `<a class="hero-product hero-product-${index + 1}" href="/product/${Number(product.id)}" aria-label="View ${esc(product.name)}">${productPhoto(product)}<span>${esc(product.category)}</span></a>`).join('')}<div class="hero-connection-mark" aria-hidden="true"><svg viewBox="0 0 24 24"><path d="M13.1 2.8 5.4 13h5.3l-.6 8.2L18.7 11h-5.3l-.3-8.2Z" fill="currentColor"/></svg></div></div>` : '<div class="home-showcase-placeholder" aria-hidden="true">Electrical essentials</div>';
+            return `<section class="home-hero"><div class="hero-copy"><p class="home-eyebrow"><span></span> YOUR ELECTRICAL SUPPLY DESK</p><h1>Get the Right Parts.<br><span>Get the Job Done.</span></h1><p class="hero-description">Quality electrical supplies for homes, businesses, electricians and every project.</p><div class="hero-actions"><a class="hero-primary" href="#homeProducts">Shop Products <span aria-hidden="true">→</span></a><a class="hero-secondary" href="#homeCategories">Explore Categories <span aria-hidden="true">↘</span></a></div><div class="hero-note"><span class="hero-note-mark">SE</span><span>SmartElectro<br><strong>Powering Every Connection</strong></span></div></div><div class="hero-visual" aria-label="Electrical products from the SmartElectro catalog">${showcase}<div class="hero-visual-caption"><span>From the everyday essential</span><b>to the final connection.</b></div></div><div class="hero-index"><span>01</span><i></i><span>SMART ELECTRICAL SUPPLIES</span></div></section>`;
+        }
+
+        function homeCategoryIcon(kind) {
+            const icons = {
+                wire: '<circle cx="12" cy="12" r="7.2"/><circle cx="12" cy="12" r="3.2"/><path d="M18 8.5h3v7h-3"/>',
+                switch: '<rect x="5" y="3" width="14" height="18" rx="3"/><path d="m10 8 4-1v7l-4 1V8Z"/>',
+                light: '<path d="M12 3a6 6 0 0 0-3.7 10.7c1 .8 1.5 1.8 1.7 3.3h4c.2-1.5.7-2.5 1.7-3.3A6 6 0 0 0 12 3Z"/><path d="M10 20h4m-3 2h2"/>',
+                fan: '<circle cx="12" cy="12" r="2"/><path d="M12 10c-1-5 1-7 3-6 2 1 1 4-2 7m1 2c5-1 7 1 6 3-1 2-4 1-7-2m-2 1c1 5-1 7-3 6-2-1-1-4 2-7m-1-2c-5 1-7-1-6-3 1-2 4-1 7 2"/>',
+                protection: '<rect x="6" y="3" width="12" height="18" rx="2"/><path d="M9 6h6m-5 4h4v5h-4zM9 18h.01m6 0h.01"/>',
+                conduit: '<path d="M4 5h16v4H4zM4 15h16v4H4z"/><path d="M8 5v4m4-4v4m4-4v4m-8 6v4m4-4v4m4-4v4"/>',
+                terminal: '<path d="M4 8h16v8H4z"/><path d="M8 8V5m8 3V5M8 16v3m8-3v3M7 12h2m3 0h2m3 0h1"/>',
+                accessory: '<path d="m12 3 8 4.5v9L12 21l-8-4.5v-9L12 3Z"/><path d="m4 7.5 8 4.7 8-4.7m-8 4.7V21"/>'
+            };
+            return `<svg viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="1.5" stroke-linecap="round" stroke-linejoin="round" aria-hidden="true">${icons[kind] || icons.accessory}</svg>`;
+        }
+
+        function homeCategoriesMarkup(categories) {
+            const categoryCards = [
+                { title: 'Wires & Cables', category: 'Wires & Cables', kind: 'wire', tone: 'moss' },
+                { title: 'Switches & Sockets', category: 'Switches & Sockets', kind: 'switch', tone: 'teal' },
+                { title: 'Lighting', category: 'Lighting', kind: 'light', tone: 'amber' },
+                { title: 'Fans', category: 'Fans', kind: 'fan', tone: 'blue' },
+                { title: 'Circuit Protection', category: 'Protection & Distribution', kind: 'protection', tone: 'forest' },
+                { title: 'Conduits & Trunking', category: 'Conduits & Trunking', kind: 'conduit', tone: 'clay' },
+                { title: 'Connectors & Terminals', category: 'Connectors & Terminals', kind: 'terminal', tone: 'teal' },
+                { title: 'Accessories', category: 'Accessories', kind: 'accessory', tone: 'moss' }
+            ].filter(item => categories.includes(item.category));
+            return `<section class="home-category-section" id="homeCategories"><div class="home-section-heading"><div><p class="home-eyebrow"><span></span> FIND YOUR CATEGORY</p><h2>Start with the right section.</h2></div><a href="#homeProducts">Browse all products <span aria-hidden="true">→</span></a></div><div class="home-category-grid">${categoryCards.map(item => `<a class="home-category-card tone-${item.tone}" href="/?category=${encodeURIComponent(item.category)}"><span class="category-icon">${homeCategoryIcon(item.kind)}</span><span class="category-card-copy"><strong>${esc(item.title)}</strong><small>Explore products</small></span><span class="category-arrow" aria-hidden="true">↗</span></a>`).join('')}</div></section>`;
+        }
+
+        function homeOwnersMarkup() {
+            return `<section class="home-owners"><div class="owner-intro"><p class="home-eyebrow"><span></span> A PERSONAL WELCOME</p><h2>Meet Your<br><span>Shop Owners</span></h2><p>Owned &amp; Managed by Gauri &amp; Rajshree</p></div><div class="owner-cards"><article class="owner-card"><span class="owner-avatar avatar-gauri" aria-hidden="true">G</span><div><span class="owner-role">SHOP OWNER</span><h3>Gauri</h3></div><span class="owner-card-mark" aria-hidden="true">SE</span></article><article class="owner-card"><span class="owner-avatar avatar-rajshree" aria-hidden="true">R</span><div><span class="owner-role">SHOP OWNER</span><h3>Rajshree</h3></div><span class="owner-card-mark" aria-hidden="true">SE</span></article></div></section>`;
+        }
+
+        function homeBenefitsMarkup() {
+            return `<section class="home-benefits" aria-label="Shopping information"><div><span class="benefit-icon">✓</span><span><strong>Electrical essentials</strong><small>A broad range for everyday jobs</small></span></div><div><span class="benefit-icon">◉</span><span><strong>Stock shown clearly</strong><small>Availability on product cards</small></span></div><div><span class="benefit-icon">⌑</span><span><strong>Secure checkout</strong><small>Order details stay private</small></span></div><div><span class="benefit-icon">₹</span><span><strong>Delivery shown upfront</strong><small>Free over ₹2,500</small></span></div></section>`;
+        }
+
+        function productCard(product) {
+            const discounted = Number(product.originalPrice) > Number(product.price);
+            const discount = discounted ? Math.round((1 - Number(product.price) / Number(product.originalPrice)) * 100) : 0;
+            return `<article class="product-card">
+                <a href="/product/${Number(product.id)}" class="product-image-link" aria-label="View ${esc(product.name)}">${productPhoto(product)}${discount ? `<span class="discount-pill">${discount}% OFF</span>` : ''}</a>
+                ${wishlistToggleMarkup(product.id)}
+                <div class="product-card-body">
+                    <div class="product-brand">${esc(product.brand || 'Electrical supplies')}</div>
+                    <a class="product-name" href="/product/${Number(product.id)}">${esc(product.name)}</a>
+                    <div class="product-category-label">${esc(product.category)}</div>
+                    ${ratingMarkup(product.averageRating, product.reviewCount)}
+                    <div class="card-price"><strong>${money(product.price)}</strong>${discounted ? `<del>${money(product.originalPrice)}</del>` : ''}</div>
+                    <div class="stock-line ${Number(product.stock) > 0 ? '' : 'stock-out'}">${Number(product.stock) > 0 ? `${Number(product.stock)} available` : 'Out of stock'}</div>
+                    <div class="card-actions"><button class="btn btn-primary add-cart-btn" ${Number(product.stock) <= 0 ? 'disabled' : ''} onclick="addProductToCart(${Number(product.id)})">Add to cart</button><a class="quick-view" href="/product/${Number(product.id)}" aria-label="View product details">↗</a></div>
+                    ${currentUser?.role === 'ADMIN' ? `<div class="admin-card-actions"><button onclick="openEditModal(${Number(product.id)})">Edit</button><button onclick="setAdminProductActive(${Number(product.id)}, false)">Deactivate</button></div>` : ''}
+                </div>
+            </article>`;
+        }
+
+        function adminMarkup() {
+            return `<details class="admin-panel"><summary>Catalog management <span>Admin tools</span></summary>
+                <form id="productForm" class="form-grid">
+                    <label>Product name<input id="name" required></label><label>Category<select id="category" required></select></label>
+                    <label>Price (₹)<input id="price" type="number" min="0" step=".01" required></label><label>Stock<input id="stock" type="number" min="0" required></label>
+                    <label>Brand<input id="brand"></label><label>Image URL<input id="imageUrl" type="url"></label>
+                    <label class="form-wide">Description<textarea id="description" rows="2"></textarea></label><label class="form-wide">Specifications<textarea id="specifications" rows="2"></textarea></label>
+                    <label>Warranty<input id="warranty"></label><label>Original price<input id="originalPrice" type="number" min="0" step=".01"></label>
+                    <label class="form-wide">Offer<input id="offer"></label><button class="btn btn-primary form-wide">Add product</button>
+                </form><p id="adminMessage" class="form-message"></p></details>`;
+        }
+
+        async function renderProductDetail(productId) {
+            const product = await api(`/api/products/${productId}`);
+            if (!product?.id) throw new Error('Product not found.');
+            let reviews;
+            try {
+                reviews = await api(`/api/products/${productId}/reviews`);
+            } catch (error) {
+                console.error(`Could not load reviews for product ${productId}.`, error);
+                reviews = {
+                    averageRating: null,
+                    reviewCount: 0,
+                    reviews: [],
+                    errorMessage: 'Customer ratings are temporarily unavailable.'
+                };
+            }
+            const discounted = Number(product.originalPrice) > Number(product.price);
+            const discount = discounted ? Math.round((1 - Number(product.price) / Number(product.originalPrice)) * 100) : 0;
+            app.innerHTML = `<nav class="breadcrumbs"><a href="/">Home</a><span>/</span><a href="/?category=${encodeURIComponent(product.category)}">${esc(product.category)}</a><span>/</span><span>${esc(product.name)}</span></nav>
+                <section class="detail-layout">
+                    <div class="detail-gallery"><div class="detail-image-main">${productPhoto(product, 'hero-product-image')}${discount ? `<span class="discount-pill">${discount}% OFF</span>` : ''}</div>
+                    <div class="thumbnail-strip"><button class="thumbnail selected" aria-label="Product image">${productPhoto(product)}</button><span class="gallery-caption">Product image</span></div></div>
+                    <div class="detail-panel"><p class="product-brand">${esc(product.brand || 'Electrical supplies')}</p><p class="eyebrow">${esc(product.category)}</p><h1>${esc(product.name)}</h1>
+                    <div id="productRatingSummary">${ratingSummaryMarkup(reviews)}</div>
+                    <p class="detail-description">${esc(product.description || 'Specifications available on request.')}</p>
+                    <div class="detail-price"><strong>${money(product.price)}</strong>${discounted ? `<del>${money(product.originalPrice)}</del><span class="discount-text">${discount}% off</span>` : ''}</div>
+                    <p class="stock-line ${Number(product.stock) > 0 ? '' : 'stock-out'}">${Number(product.stock) > 0 ? `${Number(product.stock)} in stock · Ready to ship` : 'Currently unavailable'}</p>
+                    <div class="buy-controls"><label for="detailQuantity">Quantity</label><input id="detailQuantity" type="number" min="1" max="${Math.max(1, Number(product.stock) || 0)}" value="1" ${Number(product.stock) <= 0 ? 'disabled' : ''}>
+                        <button class="btn btn-primary" ${Number(product.stock) <= 0 ? 'disabled' : ''} onclick="addProductToCart(${Number(product.id)}, Number(document.getElementById('detailQuantity').value))">Add to cart</button>
+                        <button class="btn btn-outline" ${Number(product.stock) <= 0 ? 'disabled' : ''} onclick="buyNow(${Number(product.id)}, Number(document.getElementById('detailQuantity').value))">Buy now</button></div>
+                    ${wishlistToggleMarkup(product.id, true)}
+                    <div class="detail-specifications"><h2>Product details</h2><dl><div><dt>Brand</dt><dd>${esc(product.brand || 'Not specified')}</dd></div><div><dt>Specifications</dt><dd>${esc(product.specifications || 'Not specified')}</dd></div><div><dt>Warranty</dt><dd>${esc(product.warranty || 'Not specified')}</dd></div></dl></div></div>
+                </section>
+                <div id="productReviews">${reviewSectionMarkup(productId, reviews)}</div>`;
+            wireReviewForm(productId, reviews);
+        }
+
+        async function renderWishlist() {
+            if (!currentUser) {
+                app.innerHTML = `<section class="empty-state large-empty"><span class="empty-icon" aria-hidden="true">♡</span><h1>Sign in to view your wishlist</h1><p>Your saved products stay linked to your account.</p><a class="btn btn-primary" href="/login.html">Sign in</a></section>`;
+                return;
+            }
+            app.innerHTML = '<div class="page-loading" role="status">Loading your wishlist…</div>';
+            const wishlist = await api('/api/wishlist');
+            applyWishlistView(wishlist);
+            app.innerHTML = `<div class="page-heading"><div><p class="eyebrow">YOUR SAVED PRODUCTS</p><h1>My wishlist</h1></div><span class="result-count">${wishlist.count} ${wishlist.count === 1 ? 'item' : 'items'}</span></div>
+                ${wishlist.items.length ? `<div class="wishlist-grid">${wishlist.items.map(wishlistCard).join('')}</div>` : '<section class="empty-state large-empty"><span class="empty-icon" aria-hidden="true">♡</span><h2>Your wishlist is waiting</h2><p>Save products you like and they’ll be here whenever you come back.</p><a class="btn btn-primary" href="/">Explore products</a></section>'}`;
+        }
+
+        function wishlistCard(item) {
+            const available = Number(item.stock) > 0;
+            return `<article class="wishlist-card">
+                <a class="wishlist-product-image" href="/product/${Number(item.productId)}">${productPhoto({ ...item, name: item.name })}</a>
+                <div class="wishlist-product-copy"><p class="product-brand">${esc(item.brand || 'Electrical supplies')}</p>
+                    <a class="product-name" href="/product/${Number(item.productId)}">${esc(item.name)}</a>
+                    <strong class="wishlist-price">${money(item.price)}</strong>
+                    <p class="stock-line ${available ? '' : 'stock-out'}">${available ? `${Number(item.stock)} available` : 'Out of stock'}</p>
+                    <div class="wishlist-actions"><button class="btn btn-primary" type="button" ${available ? '' : 'disabled'} onclick="moveWishlistToCart(${Number(item.productId)})">Move to cart</button>
+                    <button class="btn btn-outline" type="button" onclick="removeWishlistItem(${Number(item.productId)})">Remove</button></div>
+                </div>
+            </article>`;
+        }
+
+        function applyWishlistView(wishlist) {
+            wishlistEntries = wishlist.items || [];
+            wishlistIds = new Set(wishlistEntries.map(item => Number(item.productId)));
+            const count = document.getElementById('wishlistCount');
+            if (count) count.textContent = String(wishlist.count ?? wishlistEntries.length);
+        }
+
+        function updateWishlistButtons(productId) {
+            const saved = wishlistIds.has(Number(productId));
+            document.querySelectorAll(`[data-wishlist-product-id="${Number(productId)}"]`).forEach(button => {
+                const label = saved ? 'Remove from wishlist' : 'Add to wishlist';
+                button.setAttribute('aria-label', label);
+                button.setAttribute('aria-pressed', String(saved));
+                button.textContent = button.classList.contains('wishlist-detail-button')
+                    ? label : (saved ? '♥' : '♡');
+            });
+        }
+
+        async function toggleWishlist(productId) {
+            if (!currentUser) {
+                showToast('Sign in to save products to your wishlist.', true);
+                return;
+            }
+            const saved = wishlistIds.has(Number(productId));
+            try {
+                const wishlist = await api(`/api/wishlist/${Number(productId)}`, { method: saved ? 'DELETE' : 'POST' });
+                applyWishlistView(wishlist);
+                updateWishlistButtons(productId);
+                showToast(saved ? 'Removed from your wishlist.' : 'Added to your wishlist.');
+                if (currentPath() === '/wishlist') await renderWishlist();
+            } catch (error) {
+                showToast(error.message, true);
+            }
+        }
+
+        async function removeWishlistItem(productId) {
+            try {
+                applyWishlistView(await api(`/api/wishlist/${Number(productId)}`, { method: 'DELETE' }));
+                await updateHeader();
+                await renderWishlist();
+                showToast('Removed from your wishlist.');
+            } catch (error) {
+                showToast(error.message, true);
+            }
+        }
+
+        async function moveWishlistToCart(productId) {
+            try {
+                applyWishlistView(await api(`/api/wishlist/${Number(productId)}/cart`, { method: 'POST' }));
+                await updateHeader();
+                await renderWishlist();
+                showToast('Product moved to your cart.');
+            } catch (error) {
+                showToast(error.message, true);
+            }
+        }
+
+        function reviewSectionMarkup(productId, summary) {
+            const ownReview = summary.reviews.find(review => review.ownedByCurrentUser);
+            const form = currentUser ? `<form id="reviewForm" class="review-form">
+                <h3>${ownReview ? 'Update your review' : 'Write a review'}</h3>
+                <fieldset class="rating-picker"><legend>Your rating</legend><div class="star-inputs">
+                    ${[1, 2, 3, 4, 5].map(rating => `<label><input type="radio" name="rating" value="${rating}" required ${ownReview?.rating === rating ? 'checked' : ''}><span aria-hidden="true">★</span><span class="sr-only">${rating} ${rating === 1 ? 'star' : 'stars'}</span></label>`).join('')}
+                </div></fieldset>
+                <label class="review-field">Review title<input name="title" maxlength="120" required value="${esc(ownReview?.title || '')}"></label>
+                <label class="review-field">Your review<textarea name="reviewText" rows="4" maxlength="2000" required>${esc(ownReview?.reviewText || '')}</textarea><small>Up to 2,000 characters.</small></label>
+                <button class="btn btn-primary" type="submit">${ownReview ? 'Save changes' : 'Submit review'}</button><p id="reviewMessage" class="form-message" role="status"></p>
+            </form>` : `<p class="review-login-note"><a href="/login.html">Sign in</a> to rate and review this product.</p>`;
+            const reviews = summary.reviews.length ? summary.reviews.map(review => {
+                const stars = '★'.repeat(review.rating) + '☆'.repeat(5 - review.rating);
+                const date = new Date(review.submittedAt);
+                const displayDate = Number.isNaN(date.getTime()) ? '' : new Intl.DateTimeFormat('en-IN', { dateStyle: 'medium' }).format(date);
+                return `<article class="review-card"><header><div><div class="review-stars" aria-label="${review.rating} out of 5 stars">${stars}</div><h3>${esc(review.title)}</h3></div><time datetime="${esc(review.submittedAt)}">${esc(displayDate)}</time></header>
+                    <p class="reviewer-name">${esc(review.reviewerName)}${review.verifiedPurchase ? '<span class="verified-badge">Verified purchase</span>' : ''}</p>
+                    <p class="review-copy">${esc(review.reviewText)}</p>
+                    ${review.ownedByCurrentUser ? `<div class="review-actions"><button type="button" onclick="editProductReview()">Edit review</button><button type="button" onclick="deleteProductReview(${Number(productId)})">Delete review</button></div>` : ''}
+                </article>`;
+            }).join('') : summary.errorMessage
+                ? `<p class="empty-state" role="status">${esc(summary.errorMessage)}</p>`
+                : '<p class="empty-state">No customer ratings yet.</p>';
+            return `<section class="review-section"><div class="section-title-row"><div><p class="eyebrow">CUSTOMER FEEDBACK</p><h2>Ratings &amp; reviews</h2></div>${ratingSummaryMarkup(summary)}</div>
+                ${form}<div class="review-list">${reviews}</div></section>`;
+        }
+
+        function wireReviewForm(productId, summary) {
+            const form = document.getElementById('reviewForm');
+            if (!form) return;
+            form.addEventListener('submit', async event => {
+                event.preventDefault();
+                const message = document.getElementById('reviewMessage');
+                const submit = form.querySelector('button[type="submit"]');
+                submit.disabled = true;
+                message.textContent = '';
+                const existing = summary.reviews.some(review => review.ownedByCurrentUser);
+                const formData = new FormData(form);
+                try {
+                    const updated = await api(`/api/products/${productId}/reviews`, {
+                        method: existing ? 'PUT' : 'POST',
+                        body: JSON.stringify({
+                            rating: Number(formData.get('rating')),
+                            title: formData.get('title'),
+                            reviewText: formData.get('reviewText')
+                        })
+                    });
+                    document.getElementById('productRatingSummary').innerHTML = ratingMarkup(updated.averageRating, updated.reviewCount);
+                    document.getElementById('productReviews').innerHTML = reviewSectionMarkup(productId, updated);
+                    wireReviewForm(productId, updated);
+                    showToast(existing ? 'Your review was updated.' : 'Thank you for your review.');
+                } catch (error) {
+                    message.textContent = error.message;
+                    message.classList.add('error');
+                    submit.disabled = false;
+                }
+            });
+        }
+
+        function editProductReview() {
+            document.getElementById('reviewForm')?.scrollIntoView({ behavior: 'smooth', block: 'center' });
+            document.querySelector('#reviewForm input[name="title"]')?.focus({ preventScroll: true });
+        }
+
+        async function deleteProductReview(productId) {
+            if (!confirm('Delete your review for this product?')) return;
+            try {
+                const updated = await api(`/api/products/${productId}/reviews`, { method: 'DELETE' });
+                document.getElementById('productRatingSummary').innerHTML = ratingMarkup(updated.averageRating, updated.reviewCount);
+                document.getElementById('productReviews').innerHTML = reviewSectionMarkup(productId, updated);
+                wireReviewForm(productId, updated);
+                showToast('Your review was deleted.');
+            } catch (error) {
+                showToast(error.message, true);
+            }
+        }
+
+        async function addProductToCart(productId, quantity = 1) {
+            const selectedQuantity = Number(quantity);
+            if (!Number.isInteger(selectedQuantity) || selectedQuantity < 1 || selectedQuantity > 999) {
+                showToast('Choose a quantity between 1 and 999.', true);
+                return false;
+            }
+            try {
+                if (!currentUser) {
+                    const product = await api(`/api/products/${Number(productId)}`);
+                    const cart = readGuestCart();
+                    const existing = cart.find(item => Number(item.productId) === Number(productId));
+                    const nextQuantity = Number(existing?.quantity || 0) + selectedQuantity;
+                    if (nextQuantity > Number(product.stock)) throw new Error('Requested quantity exceeds available stock.');
+                    const item = {
+                        productId: Number(product.id),
+                        name: product.name,
+                        brand: product.brand,
+                        imageUrl: product.imageUrl,
+                        unitPrice: Number(product.price),
+                        originalUnitPrice: Math.max(Number(product.originalPrice || product.price), Number(product.price)),
+                        stock: Number(product.stock),
+                        quantity: nextQuantity
+                    };
+                    saveGuestCart(existing
+                        ? cart.map(line => Number(line.productId) === Number(productId) ? item : line)
+                        : [...cart, item]);
+                } else {
+                    await api('/api/cart/items', {
+                        method: 'POST',
+                        body: JSON.stringify({ productId: Number(productId), quantity: selectedQuantity })
+                    });
+                }
+                await updateHeader();
+                showToast('Added to your cart.');
+                return true;
+            } catch (error) {
+                showToast(error.message, true);
+                return false;
+            }
+        }
+
+        async function buyNow(productId, quantity) {
+            const selectedQuantity = Number(quantity);
+            if (!Number.isInteger(selectedQuantity) || selectedQuantity < 1 || selectedQuantity > 999) {
+                showToast('Choose a quantity between 1 and 999.', true);
+                return;
+            }
+            if (await addProductToCart(productId, selectedQuantity)) {
+                sessionStorage.setItem(checkoutIntentKey, JSON.stringify([{ productId: Number(productId), quantity: selectedQuantity }]));
+                navTo('/checkout');
+            }
+        }
+
+        function startCartCheckout() {
+            sessionStorage.removeItem(checkoutIntentKey);
+            navTo('/checkout');
+        }
+
+        function orderSummary(cart, compact = false, couponQuote = null) {
+            return `<aside class="summary-card"><h2>Order summary</h2>
+                <div class="summary-row"><span>Subtotal (${cart.itemCount} items)</span><strong>${money(couponQuote?.subtotal ?? cart.subtotal)}</strong></div>
+                ${Number(cart.discount || 0) > 0 ? `<div class="summary-row savings-row"><span>Savings included in prices</span><strong>−${money(cart.discount)}</strong></div>` : ''}
+                ${couponQuote ? `<div class="summary-row coupon-discount-row"><span>Coupon ${esc(couponQuote.code)}</span><strong>−${money(couponQuote.discount)}</strong></div>` : ''}
+                <div class="summary-row"><span>Delivery</span><strong>${Number(couponQuote?.deliveryCharge ?? cart.deliveryCharge) === 0 ? 'Free' : money(couponQuote?.deliveryCharge ?? cart.deliveryCharge)}</strong></div>
+                ${Number(couponQuote?.subtotal ?? cart.subtotal) < 2500 && Number(couponQuote?.subtotal ?? cart.subtotal) > 0 ? `<p class="delivery-hint">Free delivery on orders over ₹2,500</p>` : ''}
+                <div class="summary-total"><span>Total</span><strong>${money(couponQuote?.total ?? cart.total)}</strong></div>
+                ${compact ? '' : `<a class="btn btn-primary btn-block" href="/checkout" onclick="startCartCheckout(); return false;">Proceed to checkout <span>→</span></a><p class="secure-note">Secure checkout · Delivery shown above</p>`}
+            </aside>`;
+        }
+
+        async function renderCart() {
+            const cart = withGuestItems(currentUser ? await api('/api/cart') : { items: [] });
+            if (!cart.items.length) {
+                app.innerHTML = `<div class="page-heading"><div><p class="eyebrow">YOUR BAG</p><h1>Shopping cart</h1></div><a href="/" class="btn btn-outline">Continue shopping</a></div><section class="empty-state large-empty"><span class="empty-icon">▢</span><h2>Your cart is waiting</h2><p>Browse the catalogue and add the supplies you need.</p><a href="/" class="btn btn-primary">Explore products</a></section>`;
+                return;
+            }
+            app.innerHTML = `<div class="page-heading"><div><p class="eyebrow">YOUR BAG</p><h1>Shopping cart</h1></div><a href="/" class="back-link">Continue shopping <span>→</span></a></div>
+                <div class="commerce-layout"><section class="cart-list">${cart.items.map(cartLine).join('')}</section>${orderSummary(cart)}</div>`;
+        }
+
+        function cartLine(item) {
+            const itemId = String(item.id).startsWith('guest:') ? `'${item.id}'` : Number(item.id);
+            return `<article class="cart-line"><a href="/product/${Number(item.productId)}" class="cart-product-image">${productPhoto({ imageUrl: item.imageUrl, name: item.name })}</a>
+                <div class="cart-product-copy"><span class="product-brand">${esc(item.brand || 'Electrical supplies')}</span><a href="/product/${Number(item.productId)}" class="product-name">${esc(item.name)}</a><small>${item.stock > 0 ? `${item.stock} available` : 'Out of stock'}</small>
+                    <button class="remove-link" onclick="removeCartItem(${itemId})">Remove</button></div>
+                <label class="quantity-control">Qty <input type="number" min="1" max="${Number(item.stock)}" value="${Number(item.quantity)}" aria-label="Quantity for ${esc(item.name)}" onchange="updateCartQuantity(${itemId}, Number(this.value))"></label>
+                <strong class="cart-line-price">${money(item.lineTotal)}</strong>
+            </article>`;
+        }
+
+        async function updateCartQuantity(id, quantity) {
+            try {
+                if (String(id).startsWith('guest:')) {
+                    const productId = Number(String(id).slice(6));
+                    const cart = readGuestCart();
+                    const item = cart.find(line => Number(line.productId) === productId);
+                    if (!item || !Number.isInteger(quantity) || quantity < 1 || quantity > Number(item.stock)) {
+                        throw new Error('Choose a quantity within the available stock.');
+                    }
+                    saveGuestCart(cart.map(line => Number(line.productId) === productId ? { ...line, quantity } : line));
+                } else {
+                    await api(`/api/cart/items/${id}?quantity=${quantity}`, { method: 'PUT' });
+                }
+                await updateHeader();
+                await renderCart();
+            }
+            catch (error) { showToast(error.message, true); await renderCart(); }
+        }
+
+        async function removeCartItem(id) {
+            try {
+                if (String(id).startsWith('guest:')) {
+                    const productId = Number(String(id).slice(6));
+                    saveGuestCart(readGuestCart().filter(item => Number(item.productId) !== productId));
+                } else {
+                    await api(`/api/cart/items/${id}`, { method: 'DELETE' });
+                }
+                await updateHeader();
+                await renderCart();
+            }
+            catch (error) { showToast(error.message, true); }
+        }
+
+        async function renderCheckout() {
+            const [sourceCart, addresses] = currentUser
+                ? await Promise.all([api('/api/cart'), api('/api/addresses')])
+                : [withGuestItems({ items: [] }), []];
+            const cart = checkoutCart(sourceCart);
+            currentCheckoutCart = cart;
+            checkoutCouponQuote = null;
+            currentCheckoutOffers = currentUser ? await api('/api/coupons/offers') : [];
+            checkoutAddresses = addresses;
+            if (!cart.items.length) {
+                app.innerHTML = `<div class="empty-state large-empty"><h1>Your cart is empty</h1><a href="/" class="btn btn-primary">Continue shopping</a></div>`;
+                return;
+            }
+            const savedSelection = new URLSearchParams(window.location.search).get('address');
+            const preferred = savedSelection && addresses.some(a => String(a.id) === savedSelection)
+                ? Number(savedSelection) : (addresses.find(a => a.defaultAddress)?.id ?? addresses[0]?.id);
+            let draft = {};
+            try { draft = JSON.parse(sessionStorage.getItem(checkoutDraftKey) || '{}'); }
+            catch (error) { console.error('Could not restore the checkout address draft.', error); }
+            const defaultAddress = addresses.find(address => Number(address.id) === Number(preferred));
+            const addressValues = { ...(defaultAddress || {}), ...draft };
+            const savedCoupon = sessionStorage.getItem(checkoutCouponKey) || '';
+            const checkoutItems = cart.items.map(item => `<div class="summary-item">${productPhoto({ imageUrl: item.imageUrl, name: item.name })}<span>${esc(item.name)} <small>Qty ${item.quantity} · ${money(item.unitPrice)} each${Number(item.discount) > 0 ? ` · saved ${money(item.discount)}` : ''}</small></span><strong>${money(item.lineTotal)}</strong></div>`).join('');
+            const loginReturn = encodeURIComponent('/checkout');
+            app.innerHTML = `<div class="checkout-title"><a class="back-link" href="/cart">← Back to cart</a><p class="eyebrow">ALMOST THERE</p><h1>Secure checkout</h1><div class="checkout-progress"><span class="done">1 <b>Cart</b></span><i></i><span class="active">2 <b>Delivery &amp; payment</b></span><i></i><span>3 <b>Confirmation</b></span></div></div>
+                ${currentUser ? '' : `<div class="checkout-login-note"><strong>Checking out as a guest?</strong><span>Your address and cart stay on this device. You’ll sign in only when placing the order.</span><a href="/login.html?returnUrl=${loginReturn}">Sign in</a><a href="/register.html?returnUrl=${loginReturn}">Create account</a></div>`}
+                <div class="checkout-layout"><section class="checkout-main"><form id="checkoutForm" novalidate>
+                    <section class="checkout-section"><div class="section-title-row"><div><span class="step-number">01</span><h2>Delivery address</h2></div></div>
+                        ${addresses.length ? `<div class="saved-addresses">${addresses.map(address => addressCard(address, preferred)).join('')}</div>` : ''}
+                        <div class="form-grid address-form">
+                            <label>Full name<input name="recipientName" maxlength="80" autocomplete="name" value="${esc(addressValues.recipientName || currentUser?.username || '')}" required></label>
+                            <label>Mobile number<input name="phone" maxlength="14" autocomplete="tel" inputmode="tel" pattern="(?:\\+91[- ]?)?[6-9][0-9]{9}" placeholder="10-digit Indian mobile number" value="${esc(addressValues.phone || '')}" required></label>
+                            <label class="form-wide">Email address<input name="email" type="email" autocomplete="email" maxlength="254" value="${esc(addressValues.email || currentUser?.email || '')}" ${currentUser ? 'readonly aria-readonly="true"' : ''} required></label>
+                            <label class="form-wide">House / flat number and street<input name="addressLine1" maxlength="180" autocomplete="address-line1" value="${esc(addressValues.addressLine1 || '')}" required></label>
+                            <label class="form-wide">Area / locality<input name="addressLine2" maxlength="180" autocomplete="address-line2" value="${esc(addressValues.addressLine2 || '')}" required></label>
+                            <label>City<input name="city" maxlength="80" autocomplete="address-level2" value="${esc(addressValues.city || '')}" required></label>
+                            <label>State<input name="state" maxlength="80" autocomplete="address-level1" value="${esc(addressValues.state || '')}" required></label>
+                            <label>PIN code<input name="postalCode" inputmode="numeric" pattern="[1-9][0-9]{5}" maxlength="6" autocomplete="postal-code" placeholder="6-digit PIN code" value="${esc(addressValues.postalCode || '')}" required></label>
+                            <label>Delivery instructions <span class="optional">Optional</span><input name="deliveryInstructions" maxlength="500" placeholder="Landmark, preferred drop-off" value="${esc(addressValues.deliveryInstructions || '')}"></label>
+                            <label class="checkbox-label form-wide"><input name="saveAddress" type="checkbox"> Save this address to my account</label>
+                        </div>
+                    </section>
+                    <section class="checkout-section payment-section"><div class="section-title-row"><div><span class="step-number">02</span><h2>Payment method</h2></div></div>
+                        <label class="payment-option"><input type="radio" name="paymentMethod" value="CASH_ON_DELIVERY" checked><span class="payment-icon">₹</span><span><strong>Cash on Delivery (COD)</strong><small>Pay when your order arrives</small></span><span class="radio-mark"></span></label>
+                        <div class="payment-option payment-unavailable" aria-disabled="true"><span class="payment-icon">UPI</span><span><strong>Online payment / UPI</strong><small>Not available yet — no payment gateway is configured</small></span><span class="unavailable-badge">Unavailable</span></div>
+                        <p class="payment-note">Your order will be placed with COD. Online payment is never marked as successful without gateway confirmation.</p>
+                    </section>
+                    <p id="checkoutMessage" class="form-message" role="alert"></p>
+                    <button class="btn btn-primary btn-block place-order-button" id="placeOrderBtn" type="submit">Place Order <span>→</span></button>
+                </form></section>
+                <aside class="checkout-summary"><div id="checkoutTotals">${orderSummary(cart, true)}</div>
+                    <section class="checkout-coupon"><h2>Coupons &amp; offers</h2><div class="coupon-entry"><label class="sr-only" for="checkoutCouponCode">Coupon code</label><input id="checkoutCouponCode" maxlength="40" value="${esc(savedCoupon)}" placeholder="Enter coupon code" ${currentUser ? '' : 'disabled'}><button class="btn btn-outline" id="applyCouponButton" type="button" ${currentUser ? '' : 'disabled'}>Apply</button></div><p id="checkoutCouponMessage" class="coupon-message" role="status">${currentUser ? '' : 'Sign in to apply coupons.'}</p>
+                    ${currentCheckoutOffers.length ? `<div class="available-offers"><strong>Available offers</strong>${currentCheckoutOffers.map(offer => `<button type="button" class="offer-chip" onclick="chooseCheckoutCoupon('${esc(offer.code)}')"><strong>${esc(offer.code)}</strong><span>${offer.discountType === 'PERCENTAGE' ? `${Number(offer.discountValue)}% off${offer.maximumDiscount ? ` up to ${money(offer.maximumDiscount)}` : ''}` : `${money(offer.discountValue)} off`} · min ${money(offer.minimumOrderValue)}</span></button>`).join('')}</div>` : ''}
+                </section><div class="summary-items">${checkoutItems}</div><p class="secure-note">Your order details and delivery address stay private to your account.</p></aside></div>`;
+            document.getElementById('checkoutForm').addEventListener('submit', placeOrder);
+            document.getElementById('applyCouponButton')?.addEventListener('click', applyCheckoutCoupon);
+            if (defaultAddress) selectedCheckoutAddressId = Number(defaultAddress.id);
+            else selectedCheckoutAddressId = null;
+            if (savedCoupon && currentUser) await applyCheckoutCoupon();
+        }
+
+        let selectedCheckoutAddressId = null;
+
+        function addressCard(address, selectedId) {
+            return `<button type="button" class="address-card ${Number(address.id) === Number(selectedId) ? 'selected' : ''}" onclick="selectAddress(${Number(address.id)}, this)"><span class="address-copy"><span class="address-heading">${esc(address.label || 'Address')}${address.defaultAddress ? '<span class="default-badge">DEFAULT</span>' : ''}</span><strong>${esc(address.recipientName)}</strong><span>${esc(address.addressLine1)}${address.addressLine2 ? `, ${esc(address.addressLine2)}` : ''}</span><span>${esc(address.city)}, ${esc(address.state)} ${esc(address.postalCode)}</span><span>Phone: ${esc(address.phone)}</span></span><span class="address-use">Use this address</span></button>`;
+        }
+
+        function selectAddress(addressId, selectedCard) {
+            selectedCheckoutAddressId = Number(addressId);
+            const address = checkoutAddresses.find(item => Number(item.id) === selectedCheckoutAddressId);
+            if (!address) return;
+            const form = document.getElementById('checkoutForm');
+            for (const name of ['recipientName', 'phone', 'addressLine1', 'addressLine2', 'city', 'state', 'postalCode', 'deliveryInstructions']) {
+                if (form.elements[name]) form.elements[name].value = address[name] || '';
+            }
+            document.querySelectorAll('.address-card').forEach(card => card.classList.remove('selected'));
+            selectedCard.classList.add('selected');
+        }
+
+        async function chooseCheckoutCoupon(code) {
+            const input = document.getElementById('checkoutCouponCode');
+            if (!input) return;
+            input.value = code;
+            await applyCheckoutCoupon();
+        }
+
+        async function applyCheckoutCoupon() {
+            const input = document.getElementById('checkoutCouponCode');
+            const message = document.getElementById('checkoutCouponMessage');
+            const button = document.getElementById('applyCouponButton');
+            if (!input || !message) return false;
+            const code = input.value.trim();
+            if (!code) {
+                checkoutCouponQuote = null;
+                sessionStorage.removeItem(checkoutCouponKey);
+                document.getElementById('checkoutTotals').innerHTML = orderSummary(currentCheckoutCart, true);
+                message.textContent = 'Enter a coupon code to apply it.';
+                message.classList.add('coupon-message-error');
+                return false;
+            }
+            if (!currentUser) {
+                message.textContent = 'Sign in to apply coupons.';
+                message.classList.add('coupon-message-error');
+                return false;
+            }
+            button.disabled = true;
+            message.textContent = 'Checking coupon…';
+            message.classList.remove('coupon-message-error');
+            try {
+                const quote = await requestCouponQuote(code, currentCheckoutCart.items);
+                checkoutCouponQuote = quote;
+                sessionStorage.setItem(checkoutCouponKey, quote.code);
+                document.getElementById('checkoutTotals').innerHTML = orderSummary(currentCheckoutCart, true, quote);
+                message.textContent = `${quote.code} applied. You save ${money(quote.discount)}.`;
+                return true;
+            } catch (error) {
+                checkoutCouponQuote = null;
+                sessionStorage.removeItem(checkoutCouponKey);
+                document.getElementById('checkoutTotals').innerHTML = orderSummary(currentCheckoutCart, true);
+                message.textContent = error.message;
+                message.classList.add('coupon-message-error');
+                return false;
+            } finally {
+                button.disabled = false;
+            }
+        }
+
+        async function deleteAddress(addressId) {
+            if (!confirm('Remove this saved delivery address?')) return;
+            try {
+                await api(`/api/addresses/${addressId}`, { method: 'DELETE' });
+                await renderCheckout();
+                showToast('Address removed.');
+            } catch (error) {
+                showToast(error.message, true);
+            }
+        }
+
+        async function placeOrder(event) {
+            event.preventDefault();
+            const form = document.getElementById('checkoutForm');
+            const message = document.getElementById('checkoutMessage');
+            if (!form.reportValidity()) return;
+            const formData = Object.fromEntries(new FormData(form));
+            const address = {
+                recipientName: formData.recipientName.trim(),
+                phone: formData.phone.trim(),
+                addressLine1: formData.addressLine1.trim(),
+                addressLine2: formData.addressLine2.trim(),
+                city: formData.city.trim(),
+                state: formData.state.trim(),
+                postalCode: formData.postalCode.trim(),
+                label: 'Delivery',
+                deliveryInstructions: formData.deliveryInstructions.trim(),
+                defaultAddress: false
+            };
+            sessionStorage.setItem(checkoutDraftKey, JSON.stringify(address));
+            const checkoutEmail = String(formData.email || '').trim();
+            if (!checkoutEmail) {
+                message.textContent = 'Enter your email address to continue.';
+                form.elements.email.focus();
+                return;
+            }
+            if (!currentUser) {
+                navTo(`/login.html?returnUrl=${encodeURIComponent('/checkout')}`);
+                return;
+            }
+            const button = document.getElementById('placeOrderBtn');
+            button.disabled = true;
+            message.textContent = '';
+            try {
+                const selectedItems = checkoutCart(await api('/api/cart')).items;
+                currentCheckoutCart = cartTotals(selectedItems);
+                const couponCode = document.getElementById('checkoutCouponCode')?.value.trim() || '';
+                if (couponCode) {
+                    checkoutCouponQuote = await requestCouponQuote(couponCode, selectedItems);
+                    sessionStorage.setItem(checkoutCouponKey, checkoutCouponQuote.code);
+                    document.getElementById('checkoutTotals').innerHTML = orderSummary(currentCheckoutCart, true, checkoutCouponQuote);
+                    document.getElementById('checkoutCouponMessage').textContent =
+                        `${checkoutCouponQuote.code} applied. You save ${money(checkoutCouponQuote.discount)}.`;
+                } else {
+                    checkoutCouponQuote = null;
+                    sessionStorage.removeItem(checkoutCouponKey);
+                }
+                let addressId = selectedCheckoutAddressId;
+                if (form.elements.saveAddress.checked) {
+                    const savedAddress = await api('/api/addresses', {
+                        method: 'POST',
+                        body: JSON.stringify({ ...address, defaultAddress: false })
+                    });
+                    addressId = savedAddress.id;
+                }
+                let idempotencyKey = sessionStorage.getItem(checkoutRequestKey);
+                if (!idempotencyKey) {
+                    idempotencyKey = crypto.randomUUID();
+                    sessionStorage.setItem(checkoutRequestKey, idempotencyKey);
+                }
+                const order = await api('/api/orders', {
+                    method: 'POST',
+                    body: JSON.stringify({
+                        addressId,
+                        deliveryAddress: address,
+                        paymentMethod: 'CASH_ON_DELIVERY',
+                        idempotencyKey,
+                        items: selectedItems.map(item => ({ productId: Number(item.productId), quantity: Number(item.quantity) })),
+                        couponCode: couponCode || null
+                    })
+                });
+                sessionStorage.removeItem(checkoutRequestKey);
+                sessionStorage.removeItem(checkoutIntentKey);
+                sessionStorage.removeItem(checkoutDraftKey);
+                sessionStorage.removeItem(checkoutCouponKey);
+                saveGuestCart([]);
+                navTo(`/order-confirmation/${encodeURIComponent(order.orderNumber)}`);
+            } catch (error) {
+                button.disabled = false;
+                message.textContent = error.message;
+            }
+        }
+
+        async function renderOrderDetails(orderNumber, justPlaced = false) {
+            if (!currentUser) {
+                const returnUrl = encodeURIComponent(`${window.location.pathname}${window.location.search}`);
+                app.innerHTML = `<section class="empty-state large-empty"><h1>Sign in to view this order</h1><p>Order details are private to the account that placed the order.</p><a class="btn btn-primary" href="/login.html?returnUrl=${returnUrl}">Login</a></section>`;
+                return;
+            }
+            const order = await api(`/api/orders/${encodeURIComponent(orderNumber)}`);
+            app.innerHTML = `<section class="confirmation-card">${justPlaced ? `<div class="confetti" aria-hidden="true">${Array.from({ length: 36 }, (_, i) => `<span style="--i:${i};--x:${(i * 17 + 4) % 100}%;--h:${(i * 47) % 360}deg"></span>`).join('')}</div><div class="confirmation-icon">✓</div><p class="eyebrow">ORDER RECEIVED</p><h1>Your order has been placed successfully!</h1><p class="confirmation-copy">We’re getting your electrical supplies ready.</p>` : `<p class="eyebrow">ORDER DETAILS</p><h1>Track your order</h1><p class="confirmation-copy">Status updates are refreshed from your order record. This page does not show courier GPS location.</p>`}
+                <div class="order-meta"><span>Order ID<strong>${esc(order.orderNumber)}</strong></span><span>Order date<strong>${new Date(order.createdAt).toLocaleDateString('en-IN', { day: 'numeric', month: 'short', year: 'numeric' })}</strong></span><span>Status<strong class="status-badge">${statusLabel(order.status)}</strong></span></div>
+                ${orderTimelineMarkup(order.status)}
+                <div class="confirmation-columns"><section><h2>Delivery address</h2>${addressMarkup(order.address)}<p class="payment-note">Payment: ${paymentLabel(order.paymentMethod)}</p></section><section><h2>Order total</h2><div class="summary-row"><span>Subtotal</span><strong>${money(order.subtotal)}</strong></div>${Number(order.discount || 0) > 0 ? `<div class="summary-row savings-row"><span>Savings included in prices</span><strong>−${money(order.discount)}</strong></div>` : ''}${Number(order.couponDiscount || 0) > 0 ? `<div class="summary-row coupon-discount-row"><span>Coupon ${esc(order.couponCode)}</span><strong>−${money(order.couponDiscount)}</strong></div>` : ''}<div class="summary-row"><span>Delivery</span><strong>${Number(order.deliveryCharge) ? money(order.deliveryCharge) : 'Free'}</strong></div><div class="summary-total"><span>Total due at delivery</span><strong>${money(order.total)}</strong></div></section></div>
+                ${orderItemsMarkup(order.items)}<div class="confirmation-actions"><button class="btn btn-outline" type="button" onclick="refreshOrder('${esc(order.orderNumber)}', ${justPlaced})">Refresh status</button><a href="/orders" class="btn btn-outline">View my orders</a><a href="/" class="btn btn-primary">Continue shopping</a></div></section>`;
+        }
+
+        async function refreshOrder(orderNumber, justPlaced = false) {
+            try {
+                await renderOrderDetails(orderNumber, justPlaced);
+                showToast('Order status refreshed.');
+            } catch (error) { showToast(error.message, true); }
+        }
+
+        async function renderOrders() {
+            if (!currentUser) {
+                const returnUrl = encodeURIComponent('/orders');
+                app.innerHTML = `<section class="empty-state large-empty"><span class="empty-icon">▣</span><h1>Sign in to view your orders</h1><p>Order history is private to your account. Log in to see your purchases and delivery updates.</p><div class="confirmation-actions"><a class="btn btn-primary" href="/login.html?returnUrl=${returnUrl}">Login</a><a class="btn btn-outline" href="/register.html?returnUrl=${returnUrl}">Create account</a></div></section>`;
+                return;
+            }
+            const orders = await api('/api/orders');
+            app.innerHTML = `<div class="page-heading"><div><p class="eyebrow">YOUR ACCOUNT</p><h1>My orders</h1><p class="muted-copy">Track and manage your recent purchases. Statuses refresh from your order history, not courier GPS.</p></div><div class="page-heading-actions"><button class="btn btn-outline" type="button" onclick="renderOrders()">Refresh statuses</button><a href="/" class="btn btn-outline">Shop supplies</a></div></div>
+                ${orders.length ? `<section class="orders-list">${orders.map(orderCard).join('')}</section>` : `<section class="empty-state large-empty"><span class="empty-icon">▣</span><h2>You haven't placed any orders yet</h2><p>Your purchases will appear here after checkout.</p><a href="/" class="btn btn-primary">Browse products</a></section>`}`;
+        }
+
+        function orderCard(order) {
+            const date = new Date(order.createdAt).toLocaleDateString('en-IN', { day: 'numeric', month: 'short', year: 'numeric' });
+            return `<article class="order-card"><header class="order-card-head"><div><span class="eyebrow">ORDER PLACED</span><strong>${esc(date)}</strong></div><div><span class="eyebrow">ORDER ID</span><strong>${esc(order.orderNumber)}</strong></div><div class="order-head-total"><span class="eyebrow">TOTAL</span><strong>${money(order.total)}</strong></div><span class="status-badge ${order.status === 'CANCELLED' ? 'status-cancelled' : ''}">${statusLabel(order.status)}</span></header>
+                <div class="order-card-body"><div class="order-product-thumbs">${order.items.map(item => `<a href="/product/${Number(item.productId)}" title="${esc(item.name)}">${productPhoto({ imageUrl: item.imageUrl, name: item.name })}</a>`).join('')}</div><div class="order-card-copy"><strong>${order.items.map(item => `${item.quantity} × ${esc(item.name)}`).join(' · ')}</strong><span>${paymentLabel(order.paymentMethod)}</span><span>Delivering to ${esc(order.address.city)}, ${esc(order.address.state)}</span></div><div class="order-actions"><a href="/orders/${encodeURIComponent(order.orderNumber)}" class="btn btn-outline btn-small">View &amp; track</a>${['PLACED', 'ORDER_PLACED'].includes(order.status) ? `<button class="btn btn-cancel btn-small" onclick="cancelOrder(${Number(order.id)})">Cancel order</button>` : ''}</div></div>${orderTimelineMarkup(order.status)}<div class="order-detail-preview">${orderItemsMarkup(order.items)}<section><h3>Delivery address</h3>${addressMarkup(order.address)}</section></div></article>`;
+        }
+
+        async function cancelOrder(id) {
+            if (!confirm('Cancel this order? Items will be returned to stock.')) return;
+            try { await api(`/api/orders/${id}/cancel`, { method: 'PATCH' }); showToast('Order cancelled.'); await renderOrders(); }
+            catch (error) { showToast(error.message, true); }
+        }
+
+        function orderItemsMarkup(items) {
+            return `<div class="confirmation-items">${items.map(item => `<div class="confirmation-item"><div class="confirmation-thumb">${productPhoto({ imageUrl: item.imageUrl, name: item.name })}</div><div><strong>${esc(item.name)}</strong><small>${esc(item.brand || '')} · Qty ${item.quantity} · ${money(item.unitPrice)} each${Number(item.discount) > 0 ? ` · saved ${money(item.discount)}` : ''}</small></div><strong>${money(item.lineTotal)}</strong></div>`).join('')}</div>`;
+        }
+
+        function addressMarkup(address) {
+            return `<p class="address-display"><strong>${esc(address.recipientName)}</strong><br>${esc(address.addressLine1)}${address.addressLine2 ? `, ${esc(address.addressLine2)}` : ''}<br>${esc(address.city)}, ${esc(address.state)} ${esc(address.postalCode)}<br>Phone: ${esc(address.phone)}${address.deliveryInstructions ? `<br>Instructions: ${esc(address.deliveryInstructions)}` : ''}</p>`;
+        }
+
+        function statusLabel(status) {
+            const labels = {
+                PLACED: 'Order placed', ORDER_PLACED: 'Order placed', CONFIRMED: 'Confirmed', PACKED: 'Packed',
+                SHIPPED: 'Shipped', OUT_FOR_DELIVERY: 'Out for delivery', DELIVERED: 'Delivered', CANCELLED: 'Cancelled'
+            };
+            return labels[status] || 'Status unavailable';
+        }
+
+        function orderTimelineMarkup(status) {
+            const stages = [
+                ['ORDER_PLACED', 'Order placed'], ['CONFIRMED', 'Confirmed'], ['PACKED', 'Packed'],
+                ['SHIPPED', 'Shipped'], ['OUT_FOR_DELIVERY', 'Out for delivery'], ['DELIVERED', 'Delivered']
+            ];
+            if (status === 'CANCELLED') return '<div class="order-timeline cancelled-timeline" aria-label="Order tracking status"><span class="timeline-dot">×</span><strong>Cancelled</strong></div>';
+            const current = status === 'PLACED' ? 'ORDER_PLACED' : status;
+            const currentIndex = stages.findIndex(([key]) => key === current);
+            return `<ol class="order-timeline" aria-label="Order tracking status">${stages.map(([key, label], index) =>
+                `<li class="${index < currentIndex ? 'complete' : ''} ${index === currentIndex ? 'current' : ''}"><span class="timeline-dot">${index < currentIndex ? '✓' : index + 1}</span><span>${label}</span></li>`).join('')}</ol>`;
+        }
+
+        function paymentLabel(method) {
+            return method === 'UPI_ON_DELIVERY' ? 'UPI at delivery' : 'Cash on delivery';
+        }
+
+        function wireAdminForms() {
+            const addForm = document.getElementById('productForm');
+            if (!addForm) return;
+            document.querySelectorAll('#category, #editCategory').forEach(select => select.innerHTML = allCategories.map(category => `<option value="${esc(category)}">${esc(category)}</option>`).join(''));
+            addForm.addEventListener('submit', async event => {
+                event.preventDefault();
+                try {
+                    await api('/api/products', { method: 'POST', body: JSON.stringify(productFormPayload()) });
+                    showToast('Product added.');
+                    if (currentPath() === '/admin') await renderAdminDashboard();
+                    else await renderCatalog();
+                } catch (error) { document.getElementById('adminMessage').textContent = error.message; }
+            });
+        }
+
+        function productFormPayload(prefix = '') {
+            const value = field => document.getElementById(prefix ? `edit${field}` : field.charAt(0).toLowerCase() + field.slice(1)).value;
+            return { name: value('Name'), category: value('Category'), price: Number(value('Price')), stock: Number(value('Stock')),
+                brand: value('Brand') || null, imageUrl: value('ImageUrl') || null, description: value('Description') || null,
+                specifications: value('Specifications') || null, warranty: value('Warranty') || null,
+                originalPrice: value('OriginalPrice') ? Number(value('OriginalPrice')) : null, offer: value('Offer') || null };
+        }
+
+        async function openEditModal(id) {
+            try {
+                const product = await api(`/api/admin/products/${id}`);
+                allCategories = await api('/api/products/categories/all');
+                document.getElementById('editCategory').innerHTML = allCategories.map(category => `<option value="${esc(category)}">${esc(category)}</option>`).join('');
+                document.getElementById('editId').value = id;
+                for (const [key, value] of Object.entries({ Name: product.name, Category: product.category, Price: product.price, Stock: product.stock, Brand: product.brand, ImageUrl: product.imageUrl, Description: product.description, Specifications: product.specifications, Warranty: product.warranty, OriginalPrice: product.originalPrice, Offer: product.offer })) document.getElementById(`edit${key}`).value = value ?? '';
+                document.getElementById('editModal').showModal();
+            } catch (error) { showToast(error.message, true); }
+        }
+
+        function closeEditModal() { document.getElementById('editModal').close(); }
+
+        document.getElementById('searchForm').addEventListener('submit', event => {
+            event.preventDefault();
+            const query = document.getElementById('searchInput').value.trim();
+            navTo(query ? `/?q=${encodeURIComponent(query)}` : '/');
+        });
+        document.getElementById('mobileMenuToggle').addEventListener('click', event => {
+            const menu = document.getElementById('categoryLinks');
+            const isOpen = menu.classList.toggle('is-open');
+            event.currentTarget.setAttribute('aria-expanded', String(isOpen));
+        });
+        document.getElementById('categoryLinks').addEventListener('click', event => {
+            if (event.target.closest('a')) {
+                document.getElementById('categoryLinks').classList.remove('is-open');
+                document.getElementById('mobileMenuToggle').setAttribute('aria-expanded', 'false');
+            }
+        });
+        document.getElementById('editForm').addEventListener('submit', async event => {
+            event.preventDefault();
+            try {
+                await api(`/api/products/${document.getElementById('editId').value}`, { method: 'PUT', body: JSON.stringify(productFormPayload('edit')) });
+                closeEditModal(); showToast('Product updated.'); if (currentPath() === '/admin') await renderAdminDashboard(); else await renderCatalog();
+            } catch (error) { showToast(error.message, true); }
+        });
+
+        (async () => {
+            try {
+                await updateHeader();
+                await render();
+            } catch (error) {
+                app.innerHTML = `<section class="empty-state large-empty"><h1>We couldn’t load this page</h1><p>${esc(error.message)}</p><a class="btn btn-primary" href="/">Back to shop</a></section>`;
+            }
+        })();
+    </script>
+</body>
+</html>

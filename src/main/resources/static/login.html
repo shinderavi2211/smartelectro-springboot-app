@@ -1,0 +1,342 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <meta name="theme-color" content="#10191c">
+    <meta name="description" content="Sign in to your SmartElectro account and find the electrical supplies you need for every project.">
+    <title>Log in | Smart Electro Home</title>
+    <link rel="preconnect" href="https://fonts.googleapis.com">
+    <link rel="preconnect" href="https://fonts.gstatic.com" crossorigin>
+    <link href="https://fonts.googleapis.com/css2?family=DM+Sans:wght@400;500;600;700&family=Space+Grotesk:wght@500;600;700&display=swap" rel="stylesheet">
+    <link rel="stylesheet" href="/style.css">
+</head>
+<body class="auth-page login-page">
+    <header class="login-topbar">
+        <a class="login-brand" href="/" aria-label="SmartElectro home">
+            <span class="login-brand-mark" aria-hidden="true">
+                <svg viewBox="0 0 24 24" fill="none"><path d="M13.1 2.8 5.4 13h5.3l-.6 8.2L18.7 11h-5.3l-.3-8.2Z" fill="currentColor"/></svg>
+            </span>
+            <span>smart<span>electro</span><small>POWER EVERY CONNECTION</small></span>
+        </a>
+        <a class="login-back-link" href="/"><span aria-hidden="true">←</span> Back to store</a>
+    </header>
+
+    <main class="login-layout">
+        <section class="login-story" aria-labelledby="storyTitle">
+            <div class="story-copy">
+                <p class="login-kicker"><span></span> BUILT FOR THE PEOPLE WHO BUILD</p>
+                <h1 id="storyTitle">Power Every<br><span>Project.</span></h1>
+                <p class="story-description">Your trusted destination for electrical supplies, tools and smart technology.</p>
+            </div>
+
+            <div class="showcase-stage" aria-label="Illustrations of electrical products">
+                <div class="showcase-orbit orbit-one"></div>
+                <div class="showcase-orbit orbit-two"></div>
+                <div class="showcase-main-card">
+                    <div class="showcase-card-label"><span class="live-dot"></span> THE RIGHT CONNECTION</div>
+                    <svg class="breaker-visual" viewBox="0 0 250 190" role="img" aria-label="Illustration of a circuit breaker">
+                        <defs>
+                            <linearGradient id="breakerBody" x1="0" y1="0" x2="1" y2="1"><stop stop-color="#f6f8f4"/><stop offset="1" stop-color="#b6c5c0"/></linearGradient>
+                            <linearGradient id="breakerSide" x1="0" y1="0" x2="0" y2="1"><stop stop-color="#dce4df"/><stop offset="1" stop-color="#879892"/></linearGradient>
+                        </defs>
+                        <ellipse cx="126" cy="163" rx="76" ry="12" fill="#071013" opacity=".45"/>
+                        <path d="m67 36 92-9 22 13v104l-91 10-23-13V36Z" fill="url(#breakerSide)" stroke="#f7faf7" stroke-opacity=".48"/>
+                        <path d="m67 36 91-9v105l-91 9V36Z" fill="url(#breakerBody)" stroke="#fff" stroke-opacity=".8"/>
+                        <path d="m158 27 23 13v103l-23-11V27Z" fill="#92a19b"/>
+                        <rect x="86" y="48" width="53" height="21" rx="3" fill="#172326"/>
+                        <text x="112" y="62" text-anchor="middle" fill="#c8f36a" font-size="10" font-family="Arial" font-weight="700">SMART</text>
+                        <path d="m98 78 29-3v43l-29 3V78Z" fill="#243538"/>
+                        <path d="m102 83 21-2v21l-21 2V83Z" fill="#38d2c1"/>
+                        <path d="m107 86 10-1-5 7h5l-8 9 2-7h-5l5-8Z" fill="#102021"/>
+                        <circle cx="91" cy="132" r="3" fill="#50625d"/><circle cx="135" cy="128" r="3" fill="#50625d"/>
+                        <path d="M91 132v10m44-14v10" stroke="#455650" stroke-width="3" stroke-linecap="round"/>
+                    </svg>
+                    <div class="breaker-caption"><span>Smart protection</span><b>Made for the work ahead.</b></div>
+                </div>
+                <div class="showcase-float bulb-card">
+                    <svg viewBox="0 0 64 64" aria-hidden="true">
+                        <path d="M32 7a18 18 0 0 0-11 32.2c3.2 2.5 4.6 5 5.1 8.3h11.8c.5-3.3 1.9-5.8 5.1-8.3A18 18 0 0 0 32 7Z" fill="#d8fa85"/>
+                        <path d="M26 51h12m-10 5h8m-6 4h4" stroke="#e9f2dc" stroke-width="3" stroke-linecap="round"/>
+                        <path d="M25 47h14" stroke="#72d8c8" stroke-width="2"/>
+                        <path d="M32 14v12m-8-9 5 9m11-9-5 9" stroke="#fff" stroke-width="2" stroke-linecap="round" opacity=".85"/>
+                    </svg>
+                    <span>LED lighting</span>
+                </div>
+                <div class="showcase-float cable-card">
+                    <svg viewBox="0 0 68 60" aria-hidden="true">
+                        <ellipse cx="34" cy="31" rx="24" ry="14" fill="none" stroke="#f0a15d" stroke-width="8"/>
+                        <ellipse cx="34" cy="31" rx="14" ry="8" fill="none" stroke="#f5bd72" stroke-width="6"/>
+                        <path d="M54 30c8 0 8 13 2 16l-9 4" fill="none" stroke="#34c9bb" stroke-width="5" stroke-linecap="round"/>
+                        <path d="m45 49 6 2-3 5" fill="none" stroke="#e4f4e8" stroke-width="2" stroke-linecap="round"/>
+                    </svg>
+                    <span>Wires &amp; cable</span>
+                </div>
+                <div class="showcase-float switch-card">
+                    <svg viewBox="0 0 54 54" aria-hidden="true">
+                        <rect x="9" y="5" width="36" height="44" rx="8" fill="#e9eeeb"/>
+                        <rect x="17" y="12" width="20" height="30" rx="5" fill="#bdcbc5"/>
+                        <rect x="20" y="17" width="14" height="20" rx="4" fill="#253538"/>
+                        <path d="m26 19 4-1-2 7h4l-7 10 2-7h-4l3-9Z" fill="#d7f57b"/>
+                    </svg>
+                    <span>Modular switches</span>
+                </div>
+                <div class="tool-chip"><span aria-hidden="true">✦</span> Tools, lighting &amp; smart home</div>
+            </div>
+
+            <div class="trust-row" aria-label="Shopping benefits">
+                <div><span class="trust-icon" aria-hidden="true">✓</span><span>Quality assured</span></div>
+                <div><span class="trust-icon" aria-hidden="true">⌁</span><span>Reliable supplies</span></div>
+                <div><span class="trust-icon" aria-hidden="true">↗</span><span>Fast delivery</span></div>
+            </div>
+        </section>
+
+        <section class="login-form-region" aria-labelledby="loginTitle">
+            <div class="login-glass-panel">
+                <div class="form-panel-top">
+                    <span class="form-step">YOUR SUPPLY ACCOUNT</span>
+                    <span class="secure-label"><svg viewBox="0 0 16 16" aria-hidden="true"><path d="M4 7V5a4 4 0 0 1 8 0v2m-9 0h10v7H3V7Z" fill="none" stroke="currentColor" stroke-width="1.4" stroke-linecap="round" stroke-linejoin="round"/></svg> SECURE SIGN IN</span>
+                </div>
+                <h2 id="loginTitle">Welcome Back<span>.</span></h2>
+                <p class="login-form-intro">Sign in to continue your SmartElectro journey.</p>
+
+                <form id="loginForm" class="premium-login-form" novalidate>
+                    <div class="login-field">
+                        <label for="email">Email address</label>
+                        <div class="login-input-wrap">
+                            <svg class="field-icon" viewBox="0 0 20 20" aria-hidden="true"><rect x="2.5" y="4" width="15" height="12" rx="2" fill="none" stroke="currentColor" stroke-width="1.5"/><path d="m3.5 5 6.5 5 6.5-5" fill="none" stroke="currentColor" stroke-width="1.5" stroke-linecap="round" stroke-linejoin="round"/></svg>
+                            <input type="email" id="email" name="email" autocomplete="email" placeholder="you@example.com" aria-describedby="emailError" required>
+                        </div>
+                        <span class="field-error" id="emailError"></span>
+                    </div>
+                    <div class="login-field">
+                        <label for="password">Password</label>
+                        <div class="login-input-wrap">
+                            <svg class="field-icon" viewBox="0 0 20 20" aria-hidden="true"><rect x="3" y="8" width="14" height="10" rx="2" fill="none" stroke="currentColor" stroke-width="1.5"/><path d="M6 8V5a4 4 0 0 1 8 0v3" fill="none" stroke="currentColor" stroke-width="1.5" stroke-linecap="round"/><circle cx="10" cy="13" r="1.2" fill="currentColor"/></svg>
+                            <input type="password" id="password" name="password" autocomplete="current-password" placeholder="Enter your password" aria-describedby="passwordError" required>
+                            <button class="password-toggle" id="togglePassword" type="button" aria-label="Show password" aria-pressed="false">
+                                <svg viewBox="0 0 20 20" aria-hidden="true"><path d="M2 10s2.8-5 8-5 8 5 8 5-2.8 5-8 5-8-5-8-5Z" fill="none" stroke="currentColor" stroke-width="1.5"/><circle cx="10" cy="10" r="2.2" fill="none" stroke="currentColor" stroke-width="1.5"/></svg>
+                            </button>
+                        </div>
+                        <span class="field-error" id="passwordError"></span>
+                    </div>
+                    <button type="submit" class="premium-submit-btn" id="loginButton">
+                        <span class="button-bolt" aria-hidden="true"><svg viewBox="0 0 20 20"><path d="m11 1-8 10h6l-1 8 9-11h-6l1-7Z" fill="currentColor"/></svg></span>
+                        <span class="button-label">Sign in to your account</span>
+                        <span class="button-arrow" aria-hidden="true">→</span>
+                    </button>
+                </form>
+                <div id="message" class="premium-auth-message" role="alert" aria-live="polite"></div>
+
+                <div class="login-divider"><span>OR</span></div>
+                <div class="google-signin-container" id="googleSignInContainer" aria-busy="false">
+                    <button class="google-signin-fallback" id="googleSignInFallback" type="button" aria-describedby="googleSetupNote">
+                        <svg class="google-g-logo" viewBox="0 0 48 48" aria-hidden="true">
+                            <path fill="#EA4335" d="M24 9.5c3.54 0 6.71 1.22 9.21 3.6l6.85-6.85C35.9 2.38 30.47 0 24 0 14.62 0 6.51 5.38 2.56 13.22l7.98 6.19C12.43 13.72 17.74 9.5 24 9.5Z"/>
+                            <path fill="#4285F4" d="M46.98 24.55c0-1.57-.15-3.09-.38-4.55H24v9.02h12.88c-.58 2.96-2.26 5.48-4.77 7.18l7.73 6C44.35 37.98 46.98 31.92 46.98 24.55Z"/>
+                            <path fill="#FBBC05" d="M10.53 28.59a14.4 14.4 0 0 1 0-9.18l-7.98-6.19a23.9 23.9 0 0 0 0 21.56l7.98-6.19Z"/>
+                            <path fill="#34A853" d="M24 48c6.48 0 11.93-2.13 15.9-5.8l-7.73-6c-2.15 1.45-4.9 2.3-8.17 2.3-6.26 0-11.57-4.22-13.47-9.91l-7.98 6.19C6.51 42.62 14.62 48 24 48Z"/>
+                        </svg>
+                        <span>Continue with Google</span>
+                    </button>
+                    <div class="google-identity-button" id="googleIdentityButton" hidden></div>
+                </div>
+                <p class="google-setup-note" id="googleSetupNote" role="status" aria-live="polite">Checking Google sign-in availability…</p>
+                <a class="guest-browse-link" href="/">Continue browsing as a guest <span aria-hidden="true">↗</span></a>
+                <div class="premium-auth-links"><span>New to SmartElectro?</span><a id="registerLink" href="/register.html">Create an account <span aria-hidden="true">→</span></a></div>
+                <p class="login-privacy-note"><span aria-hidden="true">◈</span> Your account and order details stay private.</p>
+            </div>
+        </section>
+    </main>
+
+    <script>
+        const params = new URLSearchParams(window.location.search);
+        const requestedPath = params.get('returnUrl');
+        const returnPath = requestedPath && requestedPath.startsWith('/') && !requestedPath.startsWith('//') ? requestedPath : '/';
+        const registerLink = document.getElementById('registerLink');
+        const loginForm = document.getElementById('loginForm');
+        const loginButton = document.getElementById('loginButton');
+        const message = document.getElementById('message');
+        const emailInput = document.getElementById('email');
+        const passwordInput = document.getElementById('password');
+        const passwordToggle = document.getElementById('togglePassword');
+        const googleContainer = document.getElementById('googleSignInContainer');
+        const googleFallback = document.getElementById('googleSignInFallback');
+        const googleButton = document.getElementById('googleIdentityButton');
+        const googleSetupNote = document.getElementById('googleSetupNote');
+        const googleNonce = crypto.randomUUID();
+        let googleConfigMessage = 'Google sign-in is not configured. Create a Web OAuth client ID, authorize http://localhost:8081 in Google Cloud Console, and set SMARTELECTRO_GOOGLE_CLIENT_ID before starting Spring Boot.';
+
+        registerLink.href = `/register.html?returnUrl=${encodeURIComponent(returnPath)}`;
+
+        passwordToggle.addEventListener('click', () => {
+            const showing = passwordInput.type === 'password';
+            passwordInput.type = showing ? 'text' : 'password';
+            passwordToggle.setAttribute('aria-pressed', String(showing));
+            passwordToggle.setAttribute('aria-label', showing ? 'Hide password' : 'Show password');
+        });
+
+        googleFallback.addEventListener('click', () => {
+            googleSetupNote.textContent = googleConfigMessage;
+            googleSetupNote.className = 'google-setup-note error';
+        });
+
+        async function completeGoogleLogin(credential) {
+            googleContainer.classList.add('is-loading');
+            googleContainer.setAttribute('aria-busy', 'true');
+            googleFallback.disabled = true;
+            googleSetupNote.textContent = 'Verifying your Google account securely…';
+            googleSetupNote.className = 'google-setup-note pending';
+            message.textContent = '';
+            message.className = 'premium-auth-message';
+            try {
+                const response = await fetch('/api/auth/google', {
+                    method: 'POST',
+                    headers: { 'Content-Type': 'application/json' },
+                    body: JSON.stringify({ credential, nonce: googleNonce }),
+                    credentials: 'include'
+                });
+                const contentType = response.headers.get('content-type') || '';
+                const data = contentType.includes('application/json') ? await response.json() : await response.text();
+                if (!response.ok) throw new Error(typeof data === 'string' ? data : 'Google sign-in failed. Please try again.');
+                localStorage.setItem('user', JSON.stringify({ username: data.username, email: data.email, role: data.role }));
+                googleSetupNote.textContent = 'Google sign-in successful. Redirecting…';
+                googleSetupNote.className = 'google-setup-note success';
+                window.setTimeout(() => window.location.assign(returnPath), 650);
+            } catch (error) {
+                googleContainer.classList.remove('is-loading');
+                googleContainer.setAttribute('aria-busy', 'false');
+                googleFallback.disabled = false;
+                googleSetupNote.textContent = error.message || 'Google sign-in failed. Please try again.';
+                googleSetupNote.className = 'google-setup-note error';
+            }
+        }
+
+        function setupGoogleSignIn(clientId) {
+            const script = document.createElement('script');
+            script.src = 'https://accounts.google.com/gsi/client';
+            script.async = true;
+            script.defer = true;
+            script.onload = () => {
+                if (!window.google?.accounts?.id) {
+                    googleSetupNote.textContent = 'Google sign-in could not be loaded. Please use email and password.';
+                    googleSetupNote.className = 'google-setup-note error';
+                    return;
+                }
+                window.google.accounts.id.initialize({
+                    client_id: clientId,
+                    nonce: googleNonce,
+                    callback: response => {
+                        if (!response.credential) {
+                            googleSetupNote.textContent = 'Google did not return a sign-in credential. Please try again.';
+                            googleSetupNote.className = 'google-setup-note error';
+                            return;
+                        }
+                        completeGoogleLogin(response.credential);
+                    }
+                });
+                googleFallback.hidden = true;
+                googleButton.hidden = false;
+                window.google.accounts.id.renderButton(googleButton, {
+                    type: 'standard',
+                    theme: 'filled_black',
+                    size: 'large',
+                    text: 'continue_with',
+                    shape: 'rectangular',
+                    logo_alignment: 'left',
+                    width: Math.floor(googleButton.getBoundingClientRect().width)
+                });
+                googleSetupNote.textContent = '';
+            };
+            script.onerror = () => {
+                googleSetupNote.textContent = 'Google sign-in could not be loaded. Please use email and password.';
+                googleSetupNote.className = 'google-setup-note error';
+            };
+            document.head.append(script);
+        }
+
+        fetch('/api/auth/google/config', { credentials: 'include' })
+            .then(async response => {
+                if (!response.ok) throw new Error('Google sign-in settings could not be loaded.');
+                return response.json();
+            })
+            .then(config => {
+                if (!config.enabled || !config.clientId) {
+                    googleSetupNote.textContent = 'Google sign-in is not configured yet. Use email and password for now.';
+                    googleSetupNote.className = 'google-setup-note';
+                    return;
+                }
+                setupGoogleSignIn(config.clientId);
+            })
+            .catch(() => {
+                googleConfigMessage = 'Google sign-in configuration could not be checked. Restart the current SmartElectro backend build and try again; email and password remain available.';
+                googleSetupNote.textContent = 'Google sign-in is temporarily unavailable. Use email and password for now.';
+                googleSetupNote.className = 'google-setup-note';
+            });
+
+        for (const input of [emailInput, passwordInput]) {
+            input.addEventListener('input', () => {
+                input.removeAttribute('aria-invalid');
+                document.getElementById(`${input.id}Error`).textContent = '';
+                if (message.classList.contains('error')) {
+                    message.textContent = '';
+                    message.className = 'premium-auth-message';
+                }
+            });
+        }
+
+        loginForm.addEventListener('submit', async event => {
+            event.preventDefault();
+            message.textContent = '';
+            message.className = 'premium-auth-message';
+            let firstInvalid = null;
+
+            for (const input of [emailInput, passwordInput]) {
+                const error = document.getElementById(`${input.id}Error`);
+                if (!input.value.trim()) {
+                    error.textContent = input.id === 'email' ? 'Enter your email address.' : 'Enter your password.';
+                    input.setAttribute('aria-invalid', 'true');
+                    firstInvalid ||= input;
+                } else if (input.id === 'email' && !input.validity.valid) {
+                    error.textContent = 'Enter a valid email address.';
+                    input.setAttribute('aria-invalid', 'true');
+                    firstInvalid ||= input;
+                }
+            }
+            if (firstInvalid) {
+                firstInvalid.focus();
+                message.textContent = 'Check the highlighted fields and try again.';
+                message.className = 'premium-auth-message error';
+                return;
+            }
+
+            loginButton.disabled = true;
+            loginButton.classList.add('is-loading');
+            loginButton.querySelector('.button-label').textContent = 'Signing you in…';
+            message.textContent = 'Connecting securely to your account…';
+            message.className = 'premium-auth-message pending';
+            try {
+                const response = await fetch('/api/auth/login', {
+                    method: 'POST',
+                    headers: { 'Content-Type': 'application/json' },
+                    body: JSON.stringify({ email: emailInput.value.trim(), password: passwordInput.value }),
+                    credentials: 'include'
+                });
+                const contentType = response.headers.get('content-type') || '';
+                const data = contentType.includes('application/json') ? await response.json() : await response.text();
+                if (!response.ok) throw new Error(typeof data === 'string' ? data : 'Login failed. Check your email and password.');
+                localStorage.setItem('user', JSON.stringify({ username: data.username, email: data.email, role: data.role }));
+                message.textContent = 'You’re signed in. Taking you to your store…';
+                message.className = 'premium-auth-message success';
+                window.setTimeout(() => window.location.assign(returnPath), 650);
+            } catch (error) {
+                message.textContent = error.message || 'Login failed. Please try again.';
+                message.className = 'premium-auth-message error';
+                loginButton.disabled = false;
+                loginButton.classList.remove('is-loading');
+                loginButton.querySelector('.button-label').textContent = 'Sign in to your account';
+            }
+        });
+    </script>
+</body>
+</html>

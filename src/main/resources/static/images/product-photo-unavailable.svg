@@ -1,0 +1,10 @@
+<svg xmlns="http://www.w3.org/2000/svg" viewBox="0 0 600 420" role="img" aria-labelledby="title description">
+  <title id="title">Product photo unavailable</title>
+  <desc id="description">Neutral placeholder used until a verified product photo is available.</desc>
+  <rect width="600" height="420" fill="#f0f2ed"/>
+  <rect x="172" y="104" width="256" height="164" rx="8" fill="none" stroke="#bac3bb" stroke-width="4" stroke-dasharray="10 9"/>
+  <circle cx="244" cy="157" r="12" fill="#bac3bb"/>
+  <path d="m190 245 72-58 40 34 35-28 73 52" fill="none" stroke="#bac3bb" stroke-linecap="round" stroke-linejoin="round" stroke-width="7"/>
+  <text x="300" y="316" fill="#66736f" font-family="Arial, sans-serif" font-size="19" font-weight="700" text-anchor="middle">PRODUCT PHOTO UNAVAILABLE</text>
+  <text x="300" y="346" fill="#8b948e" font-family="Arial, sans-serif" font-size="14" text-anchor="middle">Verified image not found</text>
+</svg>
